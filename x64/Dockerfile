@@ -42,4 +42,5 @@ RUN ln -sf /bin/dbus-daemon /usr/bin/dbus-daemon
 ENV NVM_DIR /usr/local/nvm
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
 
+
 # CMD (service xvfb start; service dbus start; export DISPLAY=:10; ./start.sh)
