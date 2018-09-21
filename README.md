@@ -1,5 +1,7 @@
 # VS Code Linux Build Agent
 
+![build](https://img.shields.io/docker/build/joaomoreno/vscode-linux-build-agent.svg)
+
 Containers! 📦
 
 # Contributing
