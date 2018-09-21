@@ -28,6 +28,7 @@ RUN apt-get install -y libx11-xcb-dev
 RUN apt-get install -y libxkbfile-dev
 RUN apt-get install -y bc bsdmainutils
 RUN apt-get install -y libsecret-1-dev
+RUN apt-get install -y curl
 
 # Xvfb
 # Thanks https://medium.com/@griggheo/running-headless-selenium-webdriver-tests-in-docker-containers-342fdbabf756
@@ -40,7 +41,8 @@ RUN ln -sf /bin/dbus-daemon /usr/bin/dbus-daemon
 
 # nvm
 ENV NVM_DIR /usr/local/nvm
-RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+RUN mkdir /usr/local/nvm
+RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
 
 # CMD (service xvfb start; service dbus start; export DISPLAY=:10; ./start.sh)
