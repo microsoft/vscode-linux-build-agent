@@ -27,6 +27,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libxkbfile-dev \
   bc bsdmainutils \
   libsecret-1-dev \
+  pkg-config \
+  libgtk-3-0 \
   curl \
   ca-certificates
 
