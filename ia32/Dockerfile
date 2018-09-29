@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libxkbfile-dev \
   libgl1-mesa-glx:i386 \
   libgl1-mesa-dri:i386 \
-  libgtk-3-0 \
+  libgtk-3-0:i386 \
   libgirepository-1.0-1:i386 \
   gir1.2-glib-2.0:i386 \
   gir1.2-secret-1:i386 \
