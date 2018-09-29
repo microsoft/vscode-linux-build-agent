@@ -1,13 +1,16 @@
 FROM ubuntu:14.04
 
 ARG DEBIAN_FRONTEND=noninteractive
+RUN dpkg --add-architecture i386
+
+RUN apt-get update
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   build-essential \
   gcc-multilib \
   g++-multilib \
   git \
-  dpkg-dev \
+  dpkg-dev:i386 \
   zip \
   rpm \
   createrepo \
@@ -15,22 +18,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   jq \
   xvfb \
   fakeroot \
-  libgtk2.0-0 \
-  libgconf-2-4 \
-  libnss3 \
-  libasound2 \
-  libxtst6 \
+  libgtk2.0-0:i386 \
+  libgconf-2-4:i386 \
+  libnss3:i386 \
+  libasound2:i386 \
+  libxtst6:i386 \
   libfuse2 \
   libnotify-bin \
-  libx11-dev \
-  libxss1 \
-  libx11-xcb-dev \
+  libnotify4:i386 \
+  libx11-dev:i386 \
+  libxss1:i386 \
+  libx11-xcb-dev:i386 \
+  libxkbfile-dev:i386 \
   libxkbfile-dev \
+  libgl1-mesa-glx:i386 \
+  libgl1-mesa-dri:i386 \
+  libsecret-1-dev \
+  libgtk-3-0 \
+  libgirepository-1.0-1:i386 \
+  gir1.2-glib-2.0:i386 \
+  gir1.2-secret-1:i386 \
+  libsecret-1-dev:i386 \
   bc \
   bsdmainutils \
-  libsecret-1-dev \
   pkg-config \
-  libgtk-3-0 \
   curl \
   ca-certificates
 
@@ -42,3 +53,6 @@ RUN update-rc.d xvfb defaults
 
 # dbus
 RUN ln -sf /bin/dbus-daemon /usr/bin/dbus-daemon
+
+# for libsecret
+ENV PKG_CONFIG_PATH /usr/lib/i386-linux-gnu/pkgconfig
