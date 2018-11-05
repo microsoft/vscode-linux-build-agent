@@ -32,7 +32,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   pkg-config \
   libgtk-3-0 \
   curl \
-  ca-certificates
+  ca-certificates \
+  wget \
+  apt-transport-https
+
+# Dotnet
+RUN wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb
+RUN apt-get update && apt-get install -y dotnet-sdk-2.1
 
 # Xvfb
 # Thanks https://medium.com/@griggheo/running-headless-selenium-webdriver-tests-in-docker-containers-342fdbabf756
