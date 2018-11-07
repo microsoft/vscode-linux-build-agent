@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
   build-essential \
   gcc-multilib \
   g++-multilib \
@@ -34,23 +34,7 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y --no-install
   curl \
   ca-certificates \
   wget \
-  apt-transport-https \
-  sudo \
-  squashfs-tools
-
-# Snapcraft
-RUN curl -L $(curl -H 'X-Ubuntu-Series: 16' 'https://api.snapcraft.io/api/v1/snaps/details/core' | jq '.download_url' -r) --output core.snap && \
-  mkdir -p /snap/core && unsquashfs -d /snap/core/current core.snap && rm core.snap && \
-  curl -L $(curl -H 'X-Ubuntu-Series: 16' 'https://api.snapcraft.io/api/v1/snaps/details/snapcraft?channel=stable' | jq '.download_url' -r) --output snapcraft.snap && \
-  mkdir -p /snap/snapcraft && unsquashfs -d /snap/snapcraft/current snapcraft.snap && rm snapcraft.snap && \
-  apt remove --yes --purge squashfs-tools && \
-  apt-get autoclean --yes && \
-  apt-get clean --yes
-
-COPY bin/snapcraft-wrapper /snap/bin/snapcraft
-ENV SNAP=/snap/snapcraft/current
-ENV SNAP_NAME=snapcraft
-ENV PATH=/snap/bin:$PATH
+  apt-transport-https
 
 # Dotnet
 RUN wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
