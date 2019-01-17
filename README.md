@@ -2,7 +2,9 @@
 
 [![build](https://img.shields.io/docker/build/joaomoreno/vscode-linux-build-agent.svg)](https://hub.docker.com/r/joaomoreno/vscode-linux-build-agent/builds/)
 
-Containers! 📦
+## Develop
+
+Just push to `master`!
 
 # Contributing
 
