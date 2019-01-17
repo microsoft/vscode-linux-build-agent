@@ -35,7 +35,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libgl1-mesa-dri:i386 \
   libgtk-3-0:i386 \
   libgirepository-1.0-1:i386 \
-  libuuid1:i386 \
   gir1.2-glib-2.0:i386 \
   gir1.2-secret-1:i386 \
   libsecret-1-dev:i386 \
