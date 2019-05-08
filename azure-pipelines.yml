@@ -1,0 +1,24 @@
+jobs:
+- job: x64
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  variables:
+    ARCH: x64
+  steps:
+  - template: linux/product-build-linux.yml
+
+- job: ia32
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  variables:
+    ARCH: ia32
+  steps:
+  - template: linux/product-build-linux.yml
+
+- job: armhf
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  variables:
+    ARCH: armhf
+  steps:
+  - template: linux/product-build-linux.yml
