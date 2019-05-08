@@ -2,24 +2,24 @@ jobs:
 - job: x64
   pool:
     vmImage: 'Ubuntu-16.04'
-  parameters:
-    arch: x64
   steps:
   - template: build.yml
+    parameters:
+      arch: x64
 
 - job: ia32
   pool:
     vmImage: 'Ubuntu-16.04'
-  parameters:
-    arch: ia32
   steps:
   - template: build.yml
+    parameters:
+      arch: ia32
 
 - job: armhf
   pool:
     vmImage: 'Ubuntu-16.04'
-  parameters:
-    arch: armhf
-    qemu: 'true'
   steps:
   - template: build.yml
+    parameters:
+      qemu: 'true'
+      arch: armhf
