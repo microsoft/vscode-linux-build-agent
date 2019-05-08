@@ -1,6 +1,6 @@
 # VS Code Linux Build Agent
 
-[![build](https://img.shields.io/docker/build/joaomoreno/vscode-linux-build-agent.svg)](https://hub.docker.com/r/joaomoreno/vscode-linux-build-agent/builds/)
+[![Build Status](https://dev.azure.com/monacotools/vscode-linux-build-agent/_apis/build/status/microsoft.vscode-linux-build-agent?branchName=master)](https://dev.azure.com/monacotools/vscode-linux-build-agent/_build/latest?definitionId=161&branchName=master)
 
 ## Develop
 
