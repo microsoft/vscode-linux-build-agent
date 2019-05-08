@@ -5,7 +5,7 @@ jobs:
   variables:
     ARCH: x64
   steps:
-  - template: linux/product-build-linux.yml
+  - template: build.yml
 
 - job: ia32
   pool:
@@ -13,7 +13,7 @@ jobs:
   variables:
     ARCH: ia32
   steps:
-  - template: linux/product-build-linux.yml
+  - template: build.yml
 
 - job: armhf
   pool:
@@ -21,4 +21,4 @@ jobs:
   variables:
     ARCH: armhf
   steps:
-  - template: linux/product-build-linux.yml
+  - template: build.yml
