@@ -24,6 +24,15 @@ jobs:
       qemu: 'true'
       arch: armhf
 
+- job: arm64
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - template: build.yml
+    parameters:
+      qemu: 'true'
+      arch: arm64
+
 - job: alpine
   pool:
     vmImage: 'Ubuntu-16.04'
