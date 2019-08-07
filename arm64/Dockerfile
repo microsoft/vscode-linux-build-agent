@@ -37,9 +37,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   apt-transport-https
 
 # Node
-RUN curl -fsSLO --compressed https://nodejs.org/dist/v10.2.1/node-v10.2.1-linux-arm64.tar.xz
-RUN tar --strip-components=1 -xJf node-v10.2.1-linux-arm64.tar.xz -C /usr/local --no-same-owner
-RUN rm node-v10.2.1-linux-arm64.tar.xz
+RUN curl -fsSLO --compressed https://nodejs.org/dist/v10.11.0/node-v10.11.0-linux-arm64.tar.xz
+RUN tar --strip-components=1 -xJf node-v10.11.0-linux-arm64.tar.xz -C /usr/local --no-same-owner
+RUN rm node-v10.11.0-linux-arm64.tar.xz
 
 # Yarn
 RUN curl -fsSLO --compressed https://yarnpkg.com/downloads/1.10.1/yarn-v1.10.1.tar.gz
