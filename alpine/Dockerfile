@@ -1,4 +1,4 @@
-FROM node:10.11.0-alpine
+FROM node:12.4.0-alpine
 
 RUN apk add g++ python make git bash
 
