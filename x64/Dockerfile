@@ -2,6 +2,10 @@ FROM ubuntu:14.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+# Latest stable git
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository ppa:git-core/ppa -y
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
   build-essential \
   gcc-multilib \
