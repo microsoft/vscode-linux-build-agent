@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libnss3:i386 \
   libasound2:i386 \
   libxtst6:i386 \
+  libgbm1 \
   libfuse2 \
   libnotify-bin \
   libnotify4:i386 \
