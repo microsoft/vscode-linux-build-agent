@@ -7,14 +7,6 @@ jobs:
     parameters:
       arch: x64
 
-- job: ia32
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: ia32
-
 - job: armhf
   pool:
     vmImage: 'Ubuntu-16.04'
