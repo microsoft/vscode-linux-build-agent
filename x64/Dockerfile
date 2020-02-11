@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libnss3 \
   libasound2 \
   libxtst6 \
+  libgbm1 \
   libfuse2 \
   libnotify-bin \
   libx11-dev \
