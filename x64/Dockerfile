@@ -39,7 +39,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   curl \
   ca-certificates \
   wget \
-  apt-transport-https
+  apt-transport-https \
+  libssl-dev
 
 # Dotnet
 RUN wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
