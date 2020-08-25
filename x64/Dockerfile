@@ -40,7 +40,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   ca-certificates \
   wget \
   apt-transport-https \
-  libssl-dev
+  libssl-dev \
+  iproute2
 
 # Dotnet
 RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
