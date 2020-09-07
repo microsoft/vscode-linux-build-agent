@@ -32,3 +32,11 @@ jobs:
   - template: build.yml
     parameters:
       arch: alpine
+
+- job: buster-arm64
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: buster-arm64
