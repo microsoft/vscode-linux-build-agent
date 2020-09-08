@@ -40,3 +40,11 @@ jobs:
   - template: build.yml
     parameters:
       arch: buster-arm64
+
+- job: buster_armhf
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: buster-armhf
