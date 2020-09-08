@@ -1,11 +1,19 @@
 jobs:
-- job: x64
+- job: trusty-x64
   pool:
     vmImage: 'Ubuntu-16.04'
   steps:
   - template: build.yml
     parameters:
-      arch: x64
+      arch: trusty-x64
+
+- job: bionic-x64
+  pool:
+    vmImage: 'Ubuntu-18.04'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: bionic-x64
 
 - job: armhf
   pool:
