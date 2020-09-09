@@ -3,10 +3,19 @@ steps:
   - script: docker run --rm --privileged multiarch/qemu-user-static:register --reset
     displayName: 'Register Docker QEMU'
 - task: Docker@2
-  displayName: 'Build and Push Container Image'
+  displayName: 'Build Container Image'
   inputs:
     containerRegistry: VSCodeHub
     repository: 'vscode-linux-build-agent'
     Dockerfile: ${{ parameters.arch }}/Dockerfile
     buildContext: ${{ parameters.arch }}
     tags: ${{ parameters.arch }}
+    command: build
+- task: Docker@2
+  displayName: 'Push Container Image'
+  inputs:
+    containerRegistry: VSCodeHub
+    repository: 'vscode-linux-build-agent'
+    tags: ${{ parameters.arch }}
+    command: push
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
