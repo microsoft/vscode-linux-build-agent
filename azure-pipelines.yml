@@ -33,6 +33,22 @@ jobs:
     parameters:
       arch: alpine
 
+- job: stretch_arm64
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: stretch-arm64
+
+- job: stretch_armhf
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: stretch-armhf
+
 - job: buster_arm64
   pool:
     vmImage: 'Ubuntu-16.04'
