@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libx11-dev:armhf \
   libx11-xcb-dev:armhf \
   libxkbfile-dev:armhf \
-  libsecret-1-dev:armhf
+  libsecret-1-dev:armhf \
+  curl
 
 ENV AS=/usr/bin/arm-linux-gnueabihf-as \
   AR=/usr/bin/arm-linux-gnueabihf-ar \
