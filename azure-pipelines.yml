@@ -1,5 +1,5 @@
 jobs:
-- job: trusty-x64
+- job: trusty_x64
   pool:
     vmImage: 'Ubuntu-16.04'
   steps:
@@ -7,7 +7,7 @@ jobs:
     parameters:
       arch: trusty-x64
 
-- job: bionic-x64
+- job: bionic_x64
   pool:
     vmImage: 'Ubuntu-18.04'
   steps:
