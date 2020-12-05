@@ -83,10 +83,6 @@ COPY init-dbus.sh /usr/local/share/
 RUN mkdir -p /var/run/dbus \
 	&& chmod +x /usr/local/share/init-dbus.sh
 
-ENV CC=/usr/bin/gcc-4.8 \
-  CPP=/usr/bin/cpp-4.8 \
-  CXX=/usr/bin/g++-4.8
-
 USER builduser
 WORKDIR /home/builduser
 
