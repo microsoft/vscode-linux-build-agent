@@ -21,11 +21,6 @@ ENV DBUS_SESSION_BUS_ADDRESS="autolaunch:" \
 RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:git-core/ppa -y
 
-RUN echo "deb http://dk.archive.ubuntu.com/ubuntu/ xenial main"  | tee -a /etc/apt/sources.list
-RUN echo "deb http://dk.archive.ubuntu.com/ubuntu/ xenial universe" | tee -a /etc/apt/sources.list
-
-RUN cat /etc/apt/sources.list
-
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \
@@ -33,8 +28,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     g++-multilib \
     git \
-    gcc-4.8 \
-    g++-4.8 \
     gnome-keyring \
     iproute2 \
     jq \
@@ -64,6 +57,16 @@ RUN apt-get update && apt-get install -y \
   && chmod +x /setup/install-build-deps.sh \
   && bash /setup/install-build-deps.sh --syms --no-prompt --no-chromeos-fonts --no-arm --no-nacl \
   && rm -rf /var/lib/apt/lists/*
+
+# Install older gcc toolchain from Xenial
+RUN echo "deb http://dk.archive.ubuntu.com/ubuntu/ xenial main"  | tee -a /etc/apt/sources.list
+RUN echo "deb http://dk.archive.ubuntu.com/ubuntu/ xenial universe" | tee -a /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y \
+    gcc-4.9 \
+    g++-4.9 \
+    gcc-4.8 \
+    g++-4.8
 
 # No Sudo Prompt
 RUN echo 'builduser ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-builduser \
