@@ -27,6 +27,8 @@ RUN apt-get update && apt-get install -y \
     createrepo \
     curl \
     g++-multilib \
+    gcc-5 \
+    g++-5 \
     git \
     gnome-keyring \
     iproute2 \
