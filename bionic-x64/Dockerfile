@@ -24,6 +24,8 @@ RUN add-apt-repository ppa:git-core/ppa -y
 RUN echo "deb http://dk.archive.ubuntu.com/ubuntu/ xenial main"  | tee -a /etc/apt/sources.list
 RUN echo "deb http://dk.archive.ubuntu.com/ubuntu/ xenial universe" | tee -a /etc/apt/sources.list
 
+RUN cat /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \
@@ -31,10 +33,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     g++-multilib \
     git \
-    gcc-5 \
-    g++-5 \
-    gcc-4.9 \
-    g++-4.9 \
     gcc-4.8 \
     g++-4.8 \
     gnome-keyring \
