@@ -48,6 +48,7 @@ RUN apt-get update && apt-get install -y \
     locales \
     lsb-release \
     lsof \
+    policykit-1 \
     python-dbus \
     python-gtk2 \
     python-pip \
