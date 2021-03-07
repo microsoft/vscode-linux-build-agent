@@ -4,7 +4,7 @@
 
 ## Develop
 
-Just push to `master`!
+Just push to `main`!
 
 # Contributing
 
