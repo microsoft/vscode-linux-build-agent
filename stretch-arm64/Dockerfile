@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libx11-xcb-dev:arm64 \
   libxkbfile-dev:arm64 \
   libsecret-1-dev:arm64 \
-  curl
+  curl \
+  unzip
 
 ENV AS=/usr/bin/aarch64-linux-gnu-as \
   AR=/usr/bin/aarch64-linux-gnu-ar \

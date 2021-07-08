@@ -34,7 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   curl \
   ca-certificates \
   wget \
-  apt-transport-https
+  apt-transport-https \
+  unzip
 
 # Node
 RUN curl -fsSLO --compressed https://nodejs.org/dist/v10.11.0/node-v10.11.0-linux-armv6l.tar.xz
