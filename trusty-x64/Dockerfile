@@ -41,7 +41,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   wget \
   apt-transport-https \
   libssl-dev \
-  psmisc
+  psmisc \
+  unzip
 
 # Dotnet
 RUN wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
