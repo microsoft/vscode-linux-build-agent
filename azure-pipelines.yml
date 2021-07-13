@@ -9,7 +9,7 @@ jobs:
 
 - job: bionic_x64
   pool:
-    vmImage: 'Ubuntu-18.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - template: build.yml
     parameters:
@@ -72,3 +72,11 @@ jobs:
   - template: build.yml
     parameters:
       arch: buster-armhf
+
+- job: snapcraft_x64
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: snapcraft-x64
