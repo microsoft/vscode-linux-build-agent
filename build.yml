@@ -2,6 +2,9 @@ steps:
 - ${{ if eq(parameters.qemu, 'true') }}:
   - script: docker run --rm --privileged multiarch/qemu-user-static:register --reset
     displayName: 'Register Docker QEMU'
+- ${{ if eq(parameters.qemu2, 'true') }}:
+  - script: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    displayName: 'Register Docker QEMU'
 - task: Docker@2
   displayName: 'Build Container Image'
   inputs:
