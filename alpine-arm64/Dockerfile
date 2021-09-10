@@ -1,4 +1,4 @@
-FROM arm64v8/node:12.4.0-alpine
+FROM arm64v8/node:14.16.0-alpine
 
 RUN apk add g++ python make git bash
 
