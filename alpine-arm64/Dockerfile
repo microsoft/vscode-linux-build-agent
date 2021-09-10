@@ -1,6 +1,6 @@
 FROM arm64v8/node:14.16.0-alpine
 
-RUN apk add g++ python make git bash
+RUN apk add g++ python make git bash && uname -m
 
 RUN mkdir -p /root/vscode
 WORKDIR /root/vscode
