@@ -33,13 +33,22 @@ jobs:
       qemu: 'true'
       arch: arm64
 
-- job: alpine
+- job: alpine_x64
   pool:
     vmImage: 'ubuntu-latest'
   steps:
   - template: build.yml
     parameters:
-      arch: alpine
+      arch: alpine-x64
+
+- job: alpine_arm64
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: build.yml
+    parameters:
+      qemu: 'true'
+      arch: alpine-arm64
 
 - job: stretch_arm64
   pool:
