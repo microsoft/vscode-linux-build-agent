@@ -47,7 +47,6 @@ jobs:
   steps:
   - template: build.yml
     parameters:
-      qemu2: 'true'
       arch: alpine-arm64
 
 - job: stretch_arm64
