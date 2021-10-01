@@ -17,6 +17,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   curl \
   unzip
 
+# Remove expired CA cert for openSSL 1.0.2
+# https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/
+RUN rm -f /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt
+RUN update-ca-certificates --fresh
+
 ENV AS=/usr/bin/arm-linux-gnueabihf-as \
   AR=/usr/bin/arm-linux-gnueabihf-ar \
   CC=/usr/bin/arm-linux-gnueabihf-gcc \
