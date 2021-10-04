@@ -14,10 +14,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libx11-xcb-dev:arm64 \
   libxkbfile-dev:arm64 \
   libsecret-1-dev:arm64 \
-  unzip \
-  wget \
-  openssl \
-  libssl-dev:arm64
+  curl \
+  unzip
+
+# Remove expired CA cert for openSSL 1.0.2
+# https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/
+RUN rm -f /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt
+RUN update-ca-certificates --fresh
 
 ENV AS=/usr/bin/aarch64-linux-gnu-as \
   AR=/usr/bin/aarch64-linux-gnu-ar \
@@ -27,13 +30,3 @@ ENV AS=/usr/bin/aarch64-linux-gnu-as \
   LD=/usr/bin/aarch64-linux-gnu-ld \
   FC=/usr/bin/aarch64-linux-gnu-gfortran \
   PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig
-
-# Install latest curl for openSSL 1.1.x
-# https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/
-WORKDIR /tmp
-RUN wget https://github.com/curl/curl/releases/latest/download/curl-7.79.1.zip
-RUN unzip curl-7.79.1.zip
-WORKDIR /tmp/curl-7.79.1
-RUN ./configure --prefix=/usr --with-openssl --host="x86_64-pc-linux-gnu"
-RUN make
-RUN make install
