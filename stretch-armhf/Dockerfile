@@ -34,6 +34,6 @@ WORKDIR /tmp
 RUN wget https://github.com/curl/curl/releases/latest/download/curl-7.79.1.zip
 RUN unzip curl-7.79.1.zip
 WORKDIR /tmp/curl-7.79.1
-RUN ./configure --prefix=/usr --with-openssl --host="arm-linux-gnueabihf"
+RUN ./configure --prefix=/usr --with-openssl
 RUN make
 RUN make install
