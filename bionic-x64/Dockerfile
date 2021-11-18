@@ -21,10 +21,6 @@ ENV DBUS_SESSION_BUS_ADDRESS="autolaunch:" \
 RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:git-core/ppa -y
 
-# Yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \
@@ -59,7 +55,6 @@ RUN apt-get update && apt-get install -y \
     sudo \
     wget \
     xvfb \
-    yarn \
     tzdata \
     unzip \
   && curl https://chromium.googlesource.com/chromium/src/+/HEAD/build/install-build-deps.sh\?format\=TEXT | base64 --decode | cat > /setup/install-build-deps.sh \
@@ -76,6 +71,11 @@ RUN apt-get update && apt-get install -y \
     g++-4.9 \
     gcc-4.8 \
     g++-4.8
+
+# Yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y yarn
 
 # No Sudo Prompt
 RUN echo 'builduser ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-builduser \
