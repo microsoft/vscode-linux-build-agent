@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libxkbfile-dev:arm64 \
   libsecret-1-dev:arm64 \
   curl \
+  gnupg \
   unzip
 
 # Remove expired CA cert for openSSL 1.0.2
