@@ -22,6 +22,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN rm -f /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt
 RUN update-ca-certificates --fresh
 
+# Yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y yarn
+
 ENV AS=/usr/bin/aarch64-linux-gnu-as \
   AR=/usr/bin/aarch64-linux-gnu-ar \
   CC=/usr/bin/aarch64-linux-gnu-gcc \
