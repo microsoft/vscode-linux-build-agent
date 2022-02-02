@@ -15,6 +15,14 @@ jobs:
     parameters:
       arch: bionic-x64
 
+- job: centos7_devtoolset8_x64
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: centos7-devtoolset8-x64
+
 - job: armhf
   pool:
     vmImage: 'ubuntu-latest'
