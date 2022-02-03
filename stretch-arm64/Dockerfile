@@ -3,7 +3,6 @@ FROM debian:stretch
 RUN dpkg --add-architecture arm64
 RUN apt-get update && apt-get install -y --no-install-recommends \
   crossbuild-essential-arm64 \
-  python \
   git \
   pkg-config \
   fakeroot \
@@ -17,7 +16,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libsecret-1-dev:arm64 \
   curl \
   gnupg \
-  unzip
+  unzip \
+  # Dependencies for building python from source
+  build-essential \
+  libreadline-gplv2-dev \
+  libncursesw5-dev \
+  libssl-dev \
+  libsqlite3-dev \
+  tk-dev \
+  libgbm-dev \
+  libc6-dev \
+  libbz2-dev \
+  libffi-dev \
+  zlib1g-dev
+
+# Compile python3.9 from source
+RUN curl -O https://www.python.org/ftp/python/3.9.4/Python-3.9.4.tar.xz
+RUN tar -xf Python-3.9.4.tar.xz
+RUN cd Python-3.9.4 && ./configure --enable-optimizations && make altinstall
+RUN python3.9 --version
 
 # Remove expired CA cert for openSSL 1.0.2
 # https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/
