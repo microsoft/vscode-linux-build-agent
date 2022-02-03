@@ -34,7 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -O https://www.python.org/ftp/python/3.9.4/Python-3.9.4.tar.xz
 RUN tar -xf Python-3.9.4.tar.xz
 RUN cd Python-3.9.4 && ./configure --enable-optimizations && make altinstall
-RUN python3.9 --version
+RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python3.9 1
+RUN python --version
 
 # Remove expired CA cert for openSSL 1.0.2
 # https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/
