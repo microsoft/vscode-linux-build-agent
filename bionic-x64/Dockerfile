@@ -10,13 +10,6 @@ RUN groupadd --gid 1000 builduser \
 ENV TEMP=/tmp
 RUN chmod a+rwx /tmp
 
-# Core environment variables
-ENV DBUS_SESSION_BUS_ADDRESS="autolaunch:" \
-	LANG="en_US.UTF-8" \
-	LANGUAGE="en_US.UTF-8" \
-	VISUAL="nano" \
-	EDITOR="nano"
-
 # Latest stable git
 RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:git-core/ppa -y
@@ -24,22 +17,15 @@ RUN add-apt-repository ppa:git-core/ppa -y
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \
-    createrepo \
     curl \
-    g++-multilib \
-    gcc-5 \
-    g++-5 \
     git \
     gnome-keyring \
     iproute2 \
-    jq \
-    libatk-bridge2.0-0 \
     libfuse2 \
     libgconf-2-4 \
     libgdk-pixbuf2.0-0 \
     libgl1 \
     libgtk-3.0 \
-    libnotify-bin \
     libsecret-1-dev \
     libssl-dev \
     libx11-dev \
@@ -48,9 +34,7 @@ RUN apt-get update && apt-get install -y \
     locales \
     lsb-release \
     lsof \
-    policykit-1 \
     python-dbus \
-    python-gtk2 \
     python-pip \
     sudo \
     wget \
@@ -61,16 +45,6 @@ RUN apt-get update && apt-get install -y \
   && chmod +x /setup/install-build-deps.sh \
   && bash /setup/install-build-deps.sh --syms --no-prompt --no-chromeos-fonts --no-arm --no-nacl \
   && rm -rf /var/lib/apt/lists/*
-
-# Install older gcc toolchain from Xenial
-RUN echo "deb http://dk.archive.ubuntu.com/ubuntu/ xenial main"  | tee -a /etc/apt/sources.list
-RUN echo "deb http://dk.archive.ubuntu.com/ubuntu/ xenial universe" | tee -a /etc/apt/sources.list
-
-RUN apt-get update && apt-get install -y \
-    gcc-4.9 \
-    g++-4.9 \
-    gcc-4.8 \
-    g++-4.8
 
 # Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -86,13 +60,20 @@ RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsof
 RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y dotnet-sdk-2.1
 
-COPY init-dbus.sh /usr/local/share/
+# Set python3 as default
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+RUN python --version
 
-# Update privs, owners of config files
-RUN mkdir -p /var/run/dbus \
-	&& chmod +x /usr/local/share/init-dbus.sh
+# Add xvfb init script
+COPY xvfb-init.sh /etc/init.d/xvfb
+RUN chmod a+x /etc/init.d/xvfb
+
+# Setup dbus path
+RUN sudo mkdir -p /var/run/dbus
+
+# Check compiler toolchain
+RUN gcc --version
+RUN g++ --version
 
 USER builduser
 WORKDIR /home/builduser
-
-ENTRYPOINT ["/usr/local/share/init-dbus.sh"]
