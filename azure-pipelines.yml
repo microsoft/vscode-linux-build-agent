@@ -23,6 +23,14 @@ jobs:
     parameters:
       arch: centos7-devtoolset8-x64
 
+- job: centos7_devtoolset8_arm64
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: centos7-devtoolset8-arm64
+
 - job: armhf
   pool:
     vmImage: 'ubuntu-latest'
