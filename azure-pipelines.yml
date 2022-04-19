@@ -29,6 +29,7 @@ jobs:
   steps:
   - template: build.yml
     parameters:
+      qemu: 'true'
       arch: centos7-devtoolset8-arm64
 
 - job: armhf
