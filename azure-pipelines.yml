@@ -1,12 +1,4 @@
 jobs:
-- job: trusty_x64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: trusty-x64
-
 - job: bionic_x64
   pool:
     vmImage: 'ubuntu-latest'
@@ -31,24 +23,6 @@ jobs:
     parameters:
       qemu: 'true'
       arch: centos7-devtoolset8-arm64
-
-- job: armhf
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      qemu: 'true'
-      arch: armhf
-
-- job: arm64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      qemu: 'true'
-      arch: arm64
 
 - job: alpine_x64
   pool:
@@ -82,27 +56,3 @@ jobs:
   - template: build.yml
     parameters:
       arch: stretch-armhf
-
-- job: buster_arm64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: buster-arm64
-
-- job: buster_armhf
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: buster-armhf
-
-- job: snapcraft_x64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: snapcraft-x64
