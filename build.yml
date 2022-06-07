@@ -10,7 +10,6 @@ steps:
     Dockerfile: ${{ parameters.arch }}/Dockerfile
     buildContext: ${{ parameters.arch }}
     tags: ${{ parameters.arch }}
-    arguments: '--build-arg REPO=${{ parameters.repo }}'
     command: build
 - task: Docker@2
   displayName: 'Push Container Image'

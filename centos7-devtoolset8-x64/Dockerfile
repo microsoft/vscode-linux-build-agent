@@ -1,5 +1,6 @@
-ARG REPO=centos:centos7
-FROM ${REPO}
+ARG REPO=mcr.microsoft.com/mirror/docker/library/centos
+ARG TAG=7
+FROM ${REPO}:${TAG}
 
 ARG INSTALL_PKGS="devtoolset-8-gcc \
     devtoolset-8-gcc-c++ \
