@@ -1,4 +1,5 @@
-FROM centos:centos7
+ARG REPO=centos:centos7
+FROM ${REPO}
 
 ARG INSTALL_PKGS="devtoolset-8-gcc \
     devtoolset-8-gcc-c++ \

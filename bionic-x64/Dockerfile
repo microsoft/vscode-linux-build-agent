@@ -1,4 +1,5 @@
-FROM ubuntu:18.04
+ARG REPO=ubuntu:18.04
+FROM ${REPO}
 
 ARG DEBIAN_FRONTEND=noninteractive
 

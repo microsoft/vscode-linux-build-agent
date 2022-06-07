@@ -1,4 +1,5 @@
-FROM debian:stretch
+ARG REPO=debian:stretch
+FROM ${REPO}
 
 RUN dpkg --add-architecture arm64
 RUN apt-get update && apt-get install -y --no-install-recommends \

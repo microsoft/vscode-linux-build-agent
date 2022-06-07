@@ -6,6 +6,7 @@ jobs:
   - template: build.yml
     parameters:
       arch: bionic-x64
+      repo: mcr.microsoft.com/mirror/docker/library/ubuntu:18.04
 
 - job: centos7_devtoolset8_x64
   pool:
@@ -14,6 +15,7 @@ jobs:
   - template: build.yml
     parameters:
       arch: centos7-devtoolset8-x64
+      repo: mcr.microsoft.com/mirror/docker/library/centos:7
 
 - job: centos7_devtoolset8_arm64
   pool:
@@ -31,6 +33,7 @@ jobs:
   - template: build.yml
     parameters:
       arch: alpine-x64
+      repo: mcr.microsoft.com/unlisted/mirror/docker/library/node:14.16.0-alpine
 
 - job: alpine_arm64
   pool:
@@ -48,6 +51,7 @@ jobs:
   - template: build.yml
     parameters:
       arch: stretch-arm64
+      repo: mcr.microsoft.com/unlisted/mirror/docker/library/debian:stretch
 
 - job: stretch_armhf
   pool:
@@ -56,3 +60,4 @@ jobs:
   - template: build.yml
     parameters:
       arch: stretch-armhf
+      repo: mcr.microsoft.com/unlisted/mirror/docker/library/debian:stretch
