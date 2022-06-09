@@ -1,4 +1,6 @@
-FROM debian:stretch
+ARG REPO=debian
+ARG TAG=stretch
+FROM ${REPO}:${TAG}
 
 RUN dpkg --add-architecture armhf
 RUN apt-get update && apt-get install -y --no-install-recommends \

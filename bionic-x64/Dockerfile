@@ -1,4 +1,6 @@
-FROM ubuntu:18.04
+ARG REPO=mcr.microsoft.com/mirror/docker/library/ubuntu
+ARG TAG=18.04
+FROM ${REPO}:${TAG}
 
 ARG DEBIAN_FRONTEND=noninteractive
 
