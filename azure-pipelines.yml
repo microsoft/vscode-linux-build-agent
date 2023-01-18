@@ -41,18 +41,18 @@ jobs:
       qemu: 'true'
       arch: alpine-arm64
 
-- job: stretch_arm64
+- job: buster_arm64
   pool:
     vmImage: 'ubuntu-latest'
   steps:
   - template: build.yml
     parameters:
-      arch: stretch-arm64
+      arch: buster-arm64
 
-- job: stretch_armhf
+- job: buster_armhf
   pool:
     vmImage: 'ubuntu-latest'
   steps:
   - template: build.yml
     parameters:
-      arch: stretch-armhf
+      arch: buster-armhf
