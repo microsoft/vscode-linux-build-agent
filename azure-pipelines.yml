@@ -56,3 +56,11 @@ jobs:
   - template: build.yml
     parameters:
       arch: buster-armhf
+
+- job: snapcraft_x64
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: snapcraft-x64
