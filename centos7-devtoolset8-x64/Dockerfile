@@ -8,6 +8,7 @@ ARG INSTALL_PKGS="devtoolset-8-gcc \
     devtoolset-8-gdb \
     make \
     git \
+    unzip \
     sudo \
     libsecret-devel \
     nodejs \
