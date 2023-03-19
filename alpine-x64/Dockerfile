@@ -1,5 +1,5 @@
 ARG REPO=node
-ARG TAG=14.16.0-alpine
+ARG TAG=16.19.1-alpine
 FROM ${REPO}:${TAG}
 
 RUN apk add g++ python make git bash curl perl pkgconfig libsecret-dev
