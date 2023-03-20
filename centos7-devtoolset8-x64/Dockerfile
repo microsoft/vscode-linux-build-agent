@@ -28,5 +28,10 @@ RUN npm install -g yarn
 
 ENV PATH=/opt/rh/devtoolset-8/root/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+# install cmake3
+RUN git clone https://gitlab.kitware.com/cmake/cmake.git
+RUN cd cmake && git checkout v3.26.0 && ./bootstrap --prefix=/usr/local -- -DCMAKE_USE_OPENSSL=OFF \
+    make && make install
+
 RUN mkdir -p /root/vscode
 WORKDIR /root/vscode
