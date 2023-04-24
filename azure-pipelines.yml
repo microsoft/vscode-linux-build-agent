@@ -1,11 +1,11 @@
 jobs:
-- job: bionic_x64
+- job: focal_x64
   pool:
     vmImage: 'ubuntu-latest'
   steps:
   - template: build.yml
     parameters:
-      arch: bionic-x64
+      arch: focal-x64
 
 - job: centos7_devtoolset8_x64
   pool:
