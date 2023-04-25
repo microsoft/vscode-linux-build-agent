@@ -35,7 +35,7 @@ jobs:
 - job: alpine_arm64
   pool:
     vmImage: 'ubuntu-latest'
-  timeoutInMinutes: 240
+  timeoutInMinutes: 600
   steps:
   - template: build.yml
     parameters:
