@@ -31,6 +31,7 @@ jobs:
   - template: build.yml
     parameters:
       arch: alpine-x64
+      tag: alpine-311-x64
 
 - job: alpine_arm64
   pool:
@@ -40,6 +41,7 @@ jobs:
     parameters:
       qemu: 'true'
       arch: alpine-arm64
+      tag: alpine-311-arm64
 
 - job: buster_arm64
   pool:

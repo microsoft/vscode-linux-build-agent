@@ -16,6 +16,6 @@ steps:
   inputs:
     containerRegistry: VSCodeHub
     repository: 'vscode-linux-build-agent'
-    tags: ${{ parameters.arch }}
+    tags: ${{ coalesce(parameters.tag, parameters.arch) }}
     command: push
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
