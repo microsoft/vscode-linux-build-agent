@@ -57,6 +57,14 @@ jobs:
     parameters:
       arch: buster-armhf
 
+- job: stretch_armhf
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: build.yml
+    parameters:
+      arch: stretch-armhf
+
 - job: snapcraft_x64
   pool:
     vmImage: 'ubuntu-latest'
