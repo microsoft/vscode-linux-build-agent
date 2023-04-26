@@ -62,3 +62,6 @@ ENV AS=/usr/bin/arm-linux-gnueabihf-as \
   LD=/usr/bin/arm-linux-gnueabihf-ld \
   FC=/usr/bin/arm-linux-gnueabihf-gfortran \
   PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig
+
+RUN mkdir -p /root/vscode
+WORKDIR /root/vscode
