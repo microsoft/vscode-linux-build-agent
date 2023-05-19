@@ -1,4 +1,4 @@
-ARG REPO=ubuntu
+ARG REPO=mcr.microsoft.com/mirror/docker/library/ubuntu
 ARG TAG=18.04
 FROM ${REPO}:${TAG}
 
