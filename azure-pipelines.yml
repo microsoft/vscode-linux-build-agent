@@ -41,21 +41,21 @@ jobs:
       qemu: 'true'
       arch: alpine-arm64
 
-- job: buster_arm64
+- job: bionic_arm64
   pool:
     vmImage: 'ubuntu-latest'
   steps:
   - template: build.yml
     parameters:
-      arch: buster-arm64
+      arch: bionic-arm64
 
-- job: buster_armhf
+- job: bionic_armhf
   pool:
     vmImage: 'ubuntu-latest'
   steps:
   - template: build.yml
     parameters:
-      arch: buster-armhf
+      arch: bionic-armhf
 
 - job: stretch_armhf
   pool:
