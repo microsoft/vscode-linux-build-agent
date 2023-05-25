@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
+    file \
     git \
     gnome-keyring \
     iproute2 \
@@ -44,9 +45,11 @@ RUN apt-get update && apt-get install -y \
     tzdata \
     unzip \
   && curl https://chromium.googlesource.com/chromium/src/+/HEAD/build/install-build-deps.sh\?format\=TEXT | base64 --decode | cat > /setup/install-build-deps.sh \
+  && curl https://chromium.googlesource.com/chromium/src/+/HEAD/build/install-build-deps.py\?format\=TEXT | base64 --decode | cat > /setup/install-build-deps.py \
   # Remove snapcraft to avoid issues on docker build
-  && sed -i 's/${dev_list} snapcraft/${dev_list}/g' /setup/install-build-deps.sh \
+  && sed -i 's/packages.append("snapcraft")/#packages.append("snapcraft")/g' /setup/install-build-deps.py \
   && chmod +x /setup/install-build-deps.sh \
+  && chmod +x /setup/install-build-deps.py \
   && bash /setup/install-build-deps.sh --no-syms --no-prompt --no-chromeos-fonts --no-arm --no-nacl \
   && rm -rf /var/lib/apt/lists/*
 
