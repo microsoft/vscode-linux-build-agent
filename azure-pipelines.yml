@@ -57,6 +57,15 @@ jobs:
     parameters:
       arch: bionic-armhf
 
+- job: bionic_arm32v7
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: build.yml
+    parameters:
+      qemu: 'true'
+      arch: bionic-arm32v7
+
 - job: snapcraft_x64
   pool:
     vmImage: 'ubuntu-latest'
