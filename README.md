@@ -1,6 +1,6 @@
 # VS Code Linux Build Agent
 
-[![Build Status](https://dev.azure.com/monacotools/vscode-linux-build-agent/_apis/build/status/microsoft.vscode-linux-build-agent?branchName=main)](https://dev.azure.com/monacotools/vscode-linux-build-agent/_build/latest?definitionId=161&branchName=main)
+[![Build Status](https://dev.azure.com/monacotools/Monaco/_apis/build/status%2FVS%20Code%20Linux%20Build%20Agent?branchName=main)](https://dev.azure.com/monacotools/Monaco/_build/latest?definitionId=509&branchName=main)
 
 ## Develop
 
