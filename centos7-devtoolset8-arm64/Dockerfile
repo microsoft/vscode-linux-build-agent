@@ -20,9 +20,10 @@ RUN yum install -y centos-release-scl-rh && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*'
 
-# update npm and install yarn
+# update npm and install yarn, node-gyp
 RUN npm install -g npm@latest
 RUN npm install -g yarn
+RUN npm install -g node-gyp
 
 ENV PATH=/opt/rh/devtoolset-8/root/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
