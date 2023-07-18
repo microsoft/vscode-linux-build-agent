@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y \
     libgl1 \
     libgtk-3.0 \
     libsecret-1-dev \
+    libkrb5-dev \
     libssl-dev \
     libx11-dev \
     libx11-xcb-dev \

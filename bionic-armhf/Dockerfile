@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libx11-xcb-dev:armhf \
   libxkbfile-dev:armhf \
   libsecret-1-dev:armhf \
+  libkrb5-dev:armhf \
   curl \
   gnupg \
   unzip

@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   gnupg \
   make \
   python3 \
+  libkrb5-dev \
   unzip
 
 # Set python3 as default
