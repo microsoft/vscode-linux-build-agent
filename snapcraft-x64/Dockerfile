@@ -17,6 +17,7 @@ RUN apt-get install --yes \
       squashfs-tools \
       git \
       build-essential \
+      libkrb5-dev \
       autoconf
 
 # Grab the core20 snap (which snapcraft uses as a base) from the stable channel

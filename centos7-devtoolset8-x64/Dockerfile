@@ -11,6 +11,7 @@ ARG INSTALL_PKGS="devtoolset-8-gcc \
     unzip \
     sudo \
     libsecret-devel \
+    krb5-devel \
     nodejs \
     python3"
 
