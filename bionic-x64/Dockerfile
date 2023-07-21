@@ -54,30 +54,30 @@ RUN apt-get update && apt-get install -y \
   && bash /setup/install-build-deps.sh --no-syms --no-prompt --no-chromeos-fonts --no-arm --no-nacl \
   && rm -rf /var/lib/apt/lists/*
 
+# No Sudo Prompt
+RUN echo 'builduser ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-builduser \
+  && echo 'Defaults    env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
+
 # Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y yarn
 
-# No Sudo Prompt
-RUN echo 'builduser ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-builduser \
-  && echo 'Defaults    env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
-
-# Dotnet
-RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
-RUN dpkg -i packages-microsoft-prod.deb
-RUN apt-get update && apt-get install -y dotnet-sdk-2.1
+# Node.js
+RUN curl --silent --location https://deb.nodesource.com/setup_16.x | sudo -E bash -
+RUN apt-get update && apt-get install -y nodejs
+RUN npm install -g npm@latest
+RUN npm install -g node-gyp
 
 # Set python3 as default
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN python --version
 
-# Add xvfb init script
-COPY xvfb-init.sh /etc/init.d/xvfb
-RUN chmod a+x /etc/init.d/xvfb
-
-# Setup dbus path
-RUN sudo mkdir -p /var/run/dbus
+# Install docker client
+RUN sudo mkdir -m 0755 -p /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+RUN echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN sudo apt-get update && sudo apt-get install -y docker-ce
 
 # Check compiler toolchain
 RUN gcc --version
