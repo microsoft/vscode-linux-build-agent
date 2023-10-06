@@ -44,21 +44,18 @@ RUN echo 'builduser ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-builduser \
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN python --version
 
-# Yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y yarn
-
-# Node.js
-RUN curl --silent --location https://deb.nodesource.com/setup_16.x | sudo -E bash -
-RUN apt-get update && apt-get install -y nodejs
-RUN npm install -g node-gyp
-
 # Install docker client
 RUN sudo mkdir -m 0755 -p /etc/apt/keyrings
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 RUN echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-RUN sudo apt-get update && sudo apt-get install -y docker-ce
+RUN apt-get update && apt-get install -y docker-ce
+
+# Node.js
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+RUN apt-get update && apt-get install -y nodejs
+RUN npm install -g yarn
+RUN npm install -g node-gyp
 
 USER builduser
 WORKDIR /home/builduser
