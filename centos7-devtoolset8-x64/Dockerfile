@@ -12,19 +12,16 @@ ARG INSTALL_PKGS="devtoolset-8-gcc \
     sudo \
     libsecret-devel \
     krb5-devel \
-    nodejs \
     python3"
-
-# setup nodejs repo
-RUN curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
 
 RUN yum install -y centos-release-scl-rh && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*'
 
-# update npm and install yarn, node-gyp
-RUN npm install -g npm@latest
+# install nodejs
+RUN yum install https://rpm.nodesource.com/pub_16.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
+RUN yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
 RUN npm install -g yarn
 RUN npm install -g node-gyp
 

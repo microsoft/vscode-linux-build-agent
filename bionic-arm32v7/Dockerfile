@@ -7,8 +7,8 @@ RUN groupadd --gid 1000 builduser \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   software-properties-common \
-  gcc \
-  g++ \
+  gcc-8 \
+  g++-8 \
   binutils \
   build-essential \
   git \
@@ -33,3 +33,7 @@ RUN echo 'builduser ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-builduser \
 
 USER builduser
 WORKDIR /home/builduser
+
+ENV CC=/usr/bin/gcc-8 \
+  CPP=/usr/bin/cpp-8 \
+  CXX=/usr/bin/g++-8
