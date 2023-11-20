@@ -19,7 +19,7 @@ stages:
           - template: build-toolchain.yml
             parameters:
               config: aarch64-gcc-8.5.0-glibc-2.28.config
-              arch: aarch64
+              arch: arm64
               pkg: aarch64-vscode-linux-gnu
 
       - job: x86_64
@@ -30,7 +30,7 @@ stages:
           - template: build-toolchain.yml
             parameters:
               config: x86_64-gcc-8.5.0-glibc-2.28.config
-              arch: x86_64
+              arch: amd64
               pkg: x86_64-vscode-linux-gnu
 
       - job: armhf
@@ -58,9 +58,9 @@ stages:
             - download: current
               patterns: |
                 **/*.tar.gz
-            - script: cp $(Pipeline.Workspace)/x86_64/x86_64-vscode-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-vscode-linux-gnu.tar.gz
+            - script: cp $(Pipeline.Workspace)/amd64/x86_64-vscode-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-vscode-linux-gnu.tar.gz
               displayName: Copy x86_64 toolchain
-            - script: cp $(Pipeline.Workspace)/aarch64/aarch64-vscode-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-vscode-linux-gnu.tar.gz
+            - script: cp $(Pipeline.Workspace)/arm64/aarch64-vscode-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-vscode-linux-gnu.tar.gz
               displayName: Copy aarch64 toolchain
             - script: cp $(Pipeline.Workspace)/armhf/arm-vscode-linux-gnueabihf.tar.gz $(Build.ArtifactStagingDirectory)/arm-vscode-linux-gnueabihf.tar.gz
               displayName: Copy armhf toolchain

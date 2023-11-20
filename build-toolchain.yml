@@ -33,6 +33,12 @@ steps:
   displayName: 'Build toolchain'
 - script: |
     set -e
+    chmod 0755 -R `pwd`/toolchain-dir/${{ parameters.pkg }}
+    ./sysroot-scripts/sysroot-creator.sh build ${{ parameters.arch }} \
+    `pwd`/toolchain-dir/${{ parameters.pkg }}/${{ parameters.pkg }}/sysroot
+  displayName: 'Install additional libraries'
+- script: |
+    set -e
     cd toolchain-dir
     tar -czf ${{ parameters.pkg }}.tar.gz ${{ parameters.pkg }}
   displayName: 'Create pipeline asset'
