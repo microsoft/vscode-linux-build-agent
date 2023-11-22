@@ -20,7 +20,7 @@ stages:
             parameters:
               config: aarch64-gcc-8.5.0-glibc-2.28.config
               arch: arm64
-              pkg: aarch64-vscode-linux-gnu
+              pkg: aarch64-linux-gnu
 
       - job: x86_64
         pool:
@@ -31,7 +31,7 @@ stages:
             parameters:
               config: x86_64-gcc-8.5.0-glibc-2.28.config
               arch: amd64
-              pkg: x86_64-vscode-linux-gnu
+              pkg: x86_64-linux-gnu
 
       - job: armhf
         pool:
@@ -42,7 +42,7 @@ stages:
             parameters:
               arch: armhf
               config: armhf-gcc-8.5.0-glibc-2.28.config
-              pkg: arm-vscode-linux-gnueabihf
+              pkg: arm-rpi-linux-gnueabihf
 
   - ${{ if parameters.github_release }}:
     - stage: Release_toolchain
@@ -58,11 +58,11 @@ stages:
             - download: current
               patterns: |
                 **/*.tar.gz
-            - script: cp $(Pipeline.Workspace)/amd64/x86_64-vscode-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-vscode-linux-gnu.tar.gz
+            - script: cp $(Pipeline.Workspace)/amd64/x86_64-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-linux-gnu.tar.gz
               displayName: Copy x86_64 toolchain
-            - script: cp $(Pipeline.Workspace)/arm64/aarch64-vscode-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-vscode-linux-gnu.tar.gz
+            - script: cp $(Pipeline.Workspace)/arm64/aarch64-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-linux-gnu.tar.gz
               displayName: Copy aarch64 toolchain
-            - script: cp $(Pipeline.Workspace)/armhf/arm-vscode-linux-gnueabihf.tar.gz $(Build.ArtifactStagingDirectory)/arm-vscode-linux-gnueabihf.tar.gz
+            - script: cp $(Pipeline.Workspace)/armhf/arm-rpi-linux-gnueabihf.tar.gz $(Build.ArtifactStagingDirectory)/arm-rpi-linux-gnueabihf.tar.gz
               displayName: Copy armhf toolchain
             - script: (cd $(Build.ArtifactStagingDirectory) ; shasum -a 256 *.tar.gz) > $(Build.ArtifactStagingDirectory)/SHASUMS256.txt
               displayName: Compute checksums
