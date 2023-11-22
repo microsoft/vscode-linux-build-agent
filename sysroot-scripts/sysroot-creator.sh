@@ -353,9 +353,9 @@ CleanupJailSymlinks() {
 
   SAVEDPWD=$(pwd)
   cd ${INSTALL_ROOT}
-  local libdirs="lib usr/lib"
+  local libdirs="lib/${TRIPLE} usr/lib/${TRIPLE}"
   if [ -d lib64 ]; then
-    libdirs="${libdirs} lib64"
+    libdirs="${libdirs} lib64/${TRIPLE}"
   fi
 
   find $libdirs -type l -printf '%p %l\n' | while read link target; do
