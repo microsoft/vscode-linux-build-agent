@@ -76,33 +76,33 @@ stages:
                 tagSource: userSpecifiedTag
                 tag: v$(currentDate)-$(Build.BuildId)
 
-- stage: Containers
-  dependsOn: []
-  jobs:
-    - job: alpine_x64
-      pool:
-        vmImage: 'ubuntu-latest'
-      steps:
-        - template: build-containers.yml
-          parameters:
-            arch: alpine-x64
-            release: ${{ parameters.dockerhub_release }}
+  - stage: Containers
+    dependsOn: []
+    jobs:
+      - job: alpine_x64
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              arch: alpine-x64
+              release: ${{ parameters.dockerhub_release }}
 
-    - job: alpine_arm64
-      pool:
-        vmImage: 'ubuntu-latest'
-      steps:
-        - template: build-containers.yml
-          parameters:
-            qemu: 'true'
-            arch: alpine-arm64
-            release: ${{ parameters.dockerhub_release }}
+      - job: alpine_arm64
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              qemu: 'true'
+              arch: alpine-arm64
+              release: ${{ parameters.dockerhub_release }}
 
-    - job: snapcraft_x64
-      pool:
-        vmImage: 'ubuntu-latest'
-      steps:
-        - template: build-containers.yml
-          parameters:
-            arch: snapcraft-x64
-            release: ${{ parameters.dockerhub_release }}
+      - job: snapcraft_x64
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              arch: snapcraft-x64
+              release: ${{ parameters.dockerhub_release }}
