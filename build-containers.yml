@@ -18,4 +18,4 @@ steps:
     repository: 'vscode-linux-build-agent'
     tags: ${{ parameters.arch }}
     command: push
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), eq(${{ parameters.release }}, true))

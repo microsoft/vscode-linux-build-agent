@@ -1,0 +1,47 @@
+parameters:
+  - name: config
+    type: string
+  - name: arch
+    type: string
+  - name: pkg
+    type: string
+
+steps:
+- script: |
+    set -e
+    sudo apt-get update
+    sudo apt-get install -y gcc g++ gperf bison flex texinfo help2man make libncurses5-dev \
+    python3-dev autoconf automake libtool libtool-bin gawk wget bzip2 xz-utils unzip \
+    patch rsync meson ninja-build
+  displayName: 'Prepare dependencies'
+- script: |
+    set -e
+    wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.26.0.tar.bz2
+    tar -xjf crosstool-ng-1.26.0.tar.bz2
+    cd crosstool-ng-1.26.0
+    ./configure --prefix=`pwd`/out
+    make
+    make install
+  displayName: 'Setup crosstool-ng'
+- script: |
+    set -e
+    export PATH=$PATH:`pwd`/crosstool-ng-1.26.0/out/bin
+    mkdir toolchain-dir
+    cd toolchain-dir
+    cat ../${{ parameters.config }} > .config
+    ct-ng build
+  displayName: 'Build toolchain'
+- script: |
+    set -e
+    chmod 0755 -R `pwd`/toolchain-dir/${{ parameters.pkg }}
+    ./sysroot-scripts/sysroot-creator.sh build ${{ parameters.arch }} \
+    `pwd`/toolchain-dir/${{ parameters.pkg }}/${{ parameters.pkg }}/sysroot
+  displayName: 'Install additional libraries'
+- script: |
+    set -e
+    cd toolchain-dir
+    tar -czf ${{ parameters.pkg }}.tar.gz ${{ parameters.pkg }}
+  displayName: 'Create pipeline asset'
+- publish: toolchain-dir/${{ parameters.pkg }}.tar.gz
+  artifact: ${{ parameters.arch }}
+  displayName: 'Publish artifact'

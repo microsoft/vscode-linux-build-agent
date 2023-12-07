@@ -1,75 +1,108 @@
-jobs:
-- job: bionic_x64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: bionic-x64
+parameters:
+  - name: github_release
+    displayName: Create Github Release
+    type: boolean
+    default: false
+  - name: dockerhub_release
+    displayName: Create Dockerhub Release
+    type: boolean
+    default: false
 
-- job: centos7_devtoolset8_x64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: centos7-devtoolset8-x64
+stages:
+  - stage: Generate_toolchain
+    jobs:
+      - job: aarch64
+        pool:
+          vmImage: 'ubuntu-latest'
+        timeoutInMinutes: 180
+        steps:
+          - template: build-toolchain.yml
+            parameters:
+              config: aarch64-gcc-8.5.0-glibc-2.28.config
+              arch: arm64
+              pkg: aarch64-linux-gnu
 
-- job: centos7_devtoolset8_arm64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      qemu: 'true'
-      arch: centos7-devtoolset8-arm64
+      - job: x86_64
+        pool:
+          vmImage: 'ubuntu-latest'
+        timeoutInMinutes: 180
+        steps:
+          - template: build-toolchain.yml
+            parameters:
+              config: x86_64-gcc-8.5.0-glibc-2.28.config
+              arch: amd64
+              pkg: x86_64-linux-gnu
 
-- job: alpine_x64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: alpine-x64
+      - job: armhf
+        pool:
+          vmImage: 'ubuntu-latest'
+        timeoutInMinutes: 180
+        steps:
+          - template: build-toolchain.yml
+            parameters:
+              arch: armhf
+              config: armhf-gcc-8.5.0-glibc-2.28.config
+              pkg: arm-rpi-linux-gnueabihf
 
-- job: alpine_arm64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      qemu: 'true'
-      arch: alpine-arm64
+  - ${{ if parameters.github_release }}:
+    - stage: Release_toolchain
+      dependsOn:
+        - Generate_toolchain
+      pool:
+        vmImage: 'ubuntu-latest'
+      jobs:
+        - job: Publish_to_Github
+          variables:
+            currentDate: $[ format('{0:yyyy}{0:MM}{0:dd}', pipeline.startTime) ]
+          steps:
+            - download: current
+              patterns: |
+                **/*.tar.gz
+            - script: cp $(Pipeline.Workspace)/amd64/x86_64-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-linux-gnu.tar.gz
+              displayName: Copy x86_64 toolchain
+            - script: cp $(Pipeline.Workspace)/arm64/aarch64-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-linux-gnu.tar.gz
+              displayName: Copy aarch64 toolchain
+            - script: cp $(Pipeline.Workspace)/armhf/arm-rpi-linux-gnueabihf.tar.gz $(Build.ArtifactStagingDirectory)/arm-rpi-linux-gnueabihf.tar.gz
+              displayName: Copy armhf toolchain
+            - script: (cd $(Build.ArtifactStagingDirectory) ; shasum -a 256 *.tar.gz) > $(Build.ArtifactStagingDirectory)/SHASUMS256.txt
+              displayName: Compute checksums
+            - task: GithubRelease@1
+              displayName: Create GitHub Release
+              inputs:
+                gitHubConnection: oauth
+                repositoryName: microsoft/vscode-linux-build-agent
+                action: create
+                addChangeLog: false
+                tagSource: userSpecifiedTag
+                tag: v$(currentDate)-$(Build.BuildId)
 
-- job: bionic_arm64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: bionic-arm64
+  - stage: Containers
+    dependsOn: []
+    jobs:
+      - job: alpine_x64
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              arch: alpine-x64
+              release: ${{ parameters.dockerhub_release }}
 
-- job: bionic_armhf
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: bionic-armhf
+      - job: alpine_arm64
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              qemu: 'true'
+              arch: alpine-arm64
+              release: ${{ parameters.dockerhub_release }}
 
-- job: bionic_arm32v7
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      qemu: 'true'
-      arch: bionic-arm32v7
-
-- job: snapcraft_x64
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: build.yml
-    parameters:
-      arch: snapcraft-x64
+      - job: snapcraft_x64
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              arch: snapcraft-x64
+              release: ${{ parameters.dockerhub_release }}
