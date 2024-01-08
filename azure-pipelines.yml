@@ -18,7 +18,7 @@ stages:
         steps:
           - template: build-toolchain.yml
             parameters:
-              config: aarch64-gcc-8.5.0-glibc-2.28.config
+              config: aarch64-gcc-4.9.4-glibc-2.17.config
               arch: arm64
               pkg: aarch64-linux-gnu
 
@@ -29,7 +29,7 @@ stages:
         steps:
           - template: build-toolchain.yml
             parameters:
-              config: x86_64-gcc-8.5.0-glibc-2.28.config
+              config: x86_64-gcc-4.9.4-glibc-2.17.config
               arch: amd64
               pkg: x86_64-linux-gnu
 
@@ -41,7 +41,7 @@ stages:
           - template: build-toolchain.yml
             parameters:
               arch: armhf
-              config: armhf-gcc-8.5.0-glibc-2.28.config
+              config: armhf-gcc-4.9.4-glibc-2.17.config
               pkg: arm-rpi-linux-gnueabihf
 
   - ${{ if parameters.github_release }}:
