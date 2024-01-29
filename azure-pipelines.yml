@@ -11,7 +11,7 @@ parameters:
 stages:
   - stage: Generate_toolchain
     jobs:
-      - job: aarch64
+      - job: aarch64_gcc_8_5_0_glibc_2_28
         pool:
           vmImage: 'ubuntu-latest'
         timeoutInMinutes: 180
@@ -20,9 +20,22 @@ stages:
             parameters:
               config: aarch64-gcc-8.5.0-glibc-2.28.config
               arch: arm64
-              pkg: aarch64-linux-gnu
+              tuple: aarch64-linux-gnu
+              pkg: aarch64-linux-gnu-glibc-2.28
 
-      - job: x86_64
+      - job: aarch64_gcc_7_5_0_glibc_2_17
+        pool:
+          vmImage: 'ubuntu-latest'
+        timeoutInMinutes: 180
+        steps:
+          - template: build-toolchain.yml
+            parameters:
+              config: aarch64-gcc-7.5.0-glibc-2.17.config
+              arch: arm64
+              tuple: aarch64-linux-gnu
+              pkg: aarch64-linux-gnu-glibc-2.17
+
+      - job: x86_64_gcc_8_5_0_glibc_2_28
         pool:
           vmImage: 'ubuntu-latest'
         timeoutInMinutes: 180
@@ -31,9 +44,22 @@ stages:
             parameters:
               config: x86_64-gcc-8.5.0-glibc-2.28.config
               arch: amd64
-              pkg: x86_64-linux-gnu
+              tuple: x86_64-linux-gnu
+              pkg: x86_64-linux-gnu-glibc-2.28
 
-      - job: armhf
+      - job: x86_64_gcc_7_5_0_glibc_2_17
+        pool:
+          vmImage: 'ubuntu-latest'
+        timeoutInMinutes: 180
+        steps:
+          - template: build-toolchain.yml
+            parameters:
+              config: x86_64-gcc-7.5.0-glibc-2.17.config
+              arch: amd64
+              tuple: x86_64-linux-gnu
+              pkg: x86_64-linux-gnu-glibc-2.17
+
+      - job: armhf_gcc_8_5_0_glibc_2_28
         pool:
           vmImage: 'ubuntu-latest'
         timeoutInMinutes: 180
@@ -42,7 +68,20 @@ stages:
             parameters:
               arch: armhf
               config: armhf-gcc-8.5.0-glibc-2.28.config
-              pkg: arm-rpi-linux-gnueabihf
+              tuple: arm-rpi-linux-gnueabihf
+              pkg: arm-rpi-linux-gnueabihf-glibc-2.28
+
+      - job: armhf_gcc_7_5_0_glibc_2_17
+        pool:
+          vmImage: 'ubuntu-latest'
+        timeoutInMinutes: 180
+        steps:
+          - template: build-toolchain.yml
+            parameters:
+              arch: armhf
+              config: armhf-gcc-7.5.0-glibc-2.17.config
+              tuple: arm-rpi-linux-gnueabihf
+              pkg: arm-rpi-linux-gnueabihf-glibc-2.17
 
   - ${{ if parameters.github_release }}:
     - stage: Release_toolchain
@@ -58,12 +97,18 @@ stages:
             - download: current
               patterns: |
                 **/*.tar.gz
-            - script: cp $(Pipeline.Workspace)/amd64/x86_64-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-linux-gnu.tar.gz
-              displayName: Copy x86_64 toolchain
-            - script: cp $(Pipeline.Workspace)/arm64/aarch64-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-linux-gnu.tar.gz
-              displayName: Copy aarch64 toolchain
-            - script: cp $(Pipeline.Workspace)/armhf/arm-rpi-linux-gnueabihf.tar.gz $(Build.ArtifactStagingDirectory)/arm-rpi-linux-gnueabihf.tar.gz
-              displayName: Copy armhf toolchain
+            - script: cp $(Pipeline.Workspace)/x86_64-linux-gnu-glibc-2.28/x86_64-linux-gnu-glibc-2.28.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-linux-gnu-glibc-2.28.tar.gz
+              displayName: Copy x86_64 glibc 2.28 toolchain
+            - script: cp $(Pipeline.Workspace)/aarch64-linux-gnu-glibc-2.28/aarch64-linux-gnu-glibc-2.28.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-linux-gnu-glibc-2.28.tar.gz
+              displayName: Copy aarch64 glibc 2.28 toolchain
+            - script: cp $(Pipeline.Workspace)/arm-rpi-linux-gnueabihf-glibc-2.28/arm-rpi-linux-gnueabihf-glibc-2.28.tar.gz $(Build.ArtifactStagingDirectory)/arm-rpi-linux-gnueabihf-glibc-2.28.tar.gz
+              displayName: Copy armhf glibc 2.28 toolchain
+            - script: cp $(Pipeline.Workspace)/x86_64-linux-gnu-glibc-2.17/x86_64-linux-gnu-glibc-2.17.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-linux-gnu-glibc-2.17.tar.gz
+              displayName: Copy x86_64 glibc 2.17 toolchain
+            - script: cp $(Pipeline.Workspace)/aarch64-linux-gnu-glibc-2.17/aarch64-linux-gnu-glibc-2.17.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-linux-gnu-glibc-2.17.tar.gz
+              displayName: Copy aarch64 glibc 2.17 toolchain
+            - script: cp $(Pipeline.Workspace)/arm-rpi-linux-gnueabihf-glibc-2.17/arm-rpi-linux-gnueabihf-glibc-2.17.tar.gz $(Build.ArtifactStagingDirectory)/arm-rpi-linux-gnueabihf-glibc-2.17.tar.gz
+              displayName: Copy armhf glibc 2.17 toolchain
             - script: (cd $(Build.ArtifactStagingDirectory) ; shasum -a 256 *.tar.gz) > $(Build.ArtifactStagingDirectory)/SHASUMS256.txt
               displayName: Compute checksums
             - task: GithubRelease@1

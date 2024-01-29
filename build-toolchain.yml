@@ -3,6 +3,8 @@ parameters:
     type: string
   - name: arch
     type: string
+  - name: tuple
+    type: string
   - name: pkg
     type: string
 
@@ -33,15 +35,15 @@ steps:
   displayName: 'Build toolchain'
 - script: |
     set -e
-    chmod 0755 -R `pwd`/toolchain-dir/${{ parameters.pkg }}
+    chmod 0755 -R `pwd`/toolchain-dir/${{ parameters.tuple }}
     ./sysroot-scripts/sysroot-creator.sh build ${{ parameters.arch }} \
-    `pwd`/toolchain-dir/${{ parameters.pkg }}/${{ parameters.pkg }}/sysroot
+    `pwd`/toolchain-dir/${{ parameters.tuple }}/${{ parameters.tuple }}/sysroot
   displayName: 'Install additional libraries'
 - script: |
     set -e
     cd toolchain-dir
-    tar -czf ${{ parameters.pkg }}.tar.gz ${{ parameters.pkg }}
+    tar -czf ${{ parameters.pkg }}.tar.gz ${{ parameters.tuple }}
   displayName: 'Create pipeline asset'
 - publish: toolchain-dir/${{ parameters.pkg }}.tar.gz
-  artifact: ${{ parameters.arch }}
+  artifact: ${{ parameters.pkg }}
   displayName: 'Publish artifact'
