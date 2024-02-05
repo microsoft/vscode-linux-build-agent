@@ -31,6 +31,12 @@ RUN python --version
 RUN echo 'builduser ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-builduser \
   && echo 'Defaults    env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
 
+# install nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+RUN apt-get install -y nodejs
+RUN npm install -g yarn
+RUN npm install -g node-gyp
+
 USER builduser
 WORKDIR /home/builduser
 

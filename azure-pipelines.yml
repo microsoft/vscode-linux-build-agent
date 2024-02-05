@@ -151,3 +151,30 @@ stages:
             parameters:
               arch: snapcraft-x64
               release: ${{ parameters.dockerhub_release }}
+
+      - job: centos_x64
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              arch: centos7-devtoolset8-x64
+              release: ${{ parameters.dockerhub_release }}
+
+      - job: centos_arm64
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              arch: centos7-devtoolset8-arm64
+              release: ${{ parameters.dockerhub_release }}
+
+      - job: bionic_armhf
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              arch: bionic-arm32v7
+              release: ${{ parameters.dockerhub_release }}
