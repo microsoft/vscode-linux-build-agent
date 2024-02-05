@@ -168,6 +168,7 @@ stages:
           - template: build-containers.yml
             parameters:
               arch: centos7-devtoolset8-arm64
+              qemu: 'true'
               release: ${{ parameters.dockerhub_release }}
 
       - job: bionic_armhf
@@ -177,4 +178,5 @@ stages:
           - template: build-containers.yml
             parameters:
               arch: bionic-arm32v7
+              qemu: 'true'
               release: ${{ parameters.dockerhub_release }}
