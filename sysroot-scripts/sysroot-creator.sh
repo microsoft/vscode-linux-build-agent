@@ -106,6 +106,9 @@ DEBIAN_PACKAGES_MIPSEL="
 DEBIAN_PACKAGES_MIPS64EL="
 "
 
+DEBIAN_PACKAGES_POWERPC64LE="
+"
+
 readonly REQUIRED_TOOLS="curl xzcat"
 
 ######################################################################
@@ -205,6 +208,10 @@ SetEnvironmentVariables() {
     arm64)
       TRIPLE=aarch64-linux-gnu
       DEBIAN_PACKAGES_ARCH="${DEBIAN_PACKAGES_ARM64}"
+      ;;
+    ppc64el)
+      TRIPLE=powerpc64le-linux-gnu
+      DEBIAN_PACKAGES_ARCH="${DEBIAN_PACKAGES_POWERPC64LE}"
       ;;
     *)
       echo "ERROR: Unsupported architecture: $ARCH"
