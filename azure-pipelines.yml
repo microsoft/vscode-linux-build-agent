@@ -44,6 +44,17 @@ stages:
               config: armhf-gcc-8.5.0-glibc-2.28.config
               pkg: arm-rpi-linux-gnueabihf
 
+      - job: ppc64el
+        pool:
+          vmImage: 'ubuntu-latest'
+        timeoutInMinutes: 180
+        steps:
+          - template: build-toolchain.yml
+            parameters:
+              arch: ppc64el
+              config: ppc64el-gcc-8.5.0-glibc-2.28.config
+              pkg: powerpc64le-linux-gnu
+
   - ${{ if parameters.github_release }}:
     - stage: Release_toolchain
       dependsOn:
@@ -64,6 +75,8 @@ stages:
               displayName: Copy aarch64 toolchain
             - script: cp $(Pipeline.Workspace)/armhf/arm-rpi-linux-gnueabihf.tar.gz $(Build.ArtifactStagingDirectory)/arm-rpi-linux-gnueabihf.tar.gz
               displayName: Copy armhf toolchain
+            - script: cp $(Pipeline.Workspace)/ppc64el/powerpc64le-linux-gnu.tar.gz $(Build.ArtifactStagingDirectory)/powerpc64le-linux-gnu.tar.gz
+              displayName: Copy ppc64el toolchain
             - script: (cd $(Build.ArtifactStagingDirectory) ; shasum -a 256 *.tar.gz) > $(Build.ArtifactStagingDirectory)/SHASUMS256.txt
               displayName: Compute checksums
             - task: GithubRelease@1
