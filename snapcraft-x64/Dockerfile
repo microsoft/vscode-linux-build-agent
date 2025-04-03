@@ -20,6 +20,12 @@ RUN apt-get install --yes \
       libkrb5-dev \
       autoconf
 
+# Grab the core18 snap (which snapcraft uses as a base) from the stable channel
+# and unpack it in the proper place.
+RUN curl -L $(curl -H 'X-Ubuntu-Series: 16' 'https://api.snapcraft.io/api/v1/snaps/details/core18' | jq '.download_url' -r) --output core18.snap
+RUN mkdir -p /snap/core18
+RUN unsquashfs -d /snap/core18/current core18.snap
+
 # Grab the core20 snap (which snapcraft uses as a base) from the stable channel
 # and unpack it in the proper place.
 RUN curl -L $(curl -H 'X-Ubuntu-Series: 16' 'https://api.snapcraft.io/api/v1/snaps/details/core20' | jq '.download_url' -r) --output core20.snap
@@ -54,6 +60,7 @@ RUN cd patchelf && ./bootstrap.sh && ./configure && make && make check && cp ./s
 # Multi-stage build, only need the snaps from the builder. Copy them one at a
 # time so they can be cached.
 FROM ${REPO}:${TAG}
+COPY --from=builder /snap/core18 /snap/core18
 COPY --from=builder /snap/core20 /snap/core20
 COPY --from=builder /snap/snapcraft /snap/snapcraft
 COPY --from=builder /snap/bin/snapcraft /snap/bin/snapcraft
