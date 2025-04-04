@@ -1,0 +1,28 @@
+parameters:
+  - name: tuple
+    type: string
+  - name: pkg
+    type: string
+
+steps:
+- script: |
+    set -e
+    sudo apt-get update
+    sudo apt-get install -y gcc g++ gperf bison flex texinfo help2man make libncurses5-dev \
+    python3-dev autoconf automake libtool libtool-bin gawk wget bzip2 xz-utils unzip \
+    patch rsync meson ninja-build git
+  displayName: 'Prepare dependencies'
+- script: |
+    set -e
+    git clone https://github.com/richfelker/musl-cross-make/
+    cd musl-cross-make
+    make TARGET=${{ parameters.tuple }} GCC_VER=10.3.0 BINUTILS_VER=2.33.1 LINUX_VER=5.8.5 install
+  displayName: 'Build toolchain'
+- script: |
+    set -e
+    cd musl-cross-make
+    tar -czf ${{ parameters.pkg }}.tar.gz output
+  displayName: 'Create pipeline asset'
+- publish: musl-cross-make/${{ parameters.pkg }}.tar.gz
+  artifact: ${{ parameters.pkg }}
+  displayName: 'Publish artifact'
