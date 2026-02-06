@@ -205,6 +205,7 @@ extends:
               outputs:
               - output: containerImage
                 image: vscodehub.azurecr.io/vscode-linux-build-agent:alpine-x64
+                condition: eq(${{ parameters.dockerhub_release }}, 'true')
             steps:
               - template: build-containers.yml@self
                 parameters:
@@ -219,6 +220,7 @@ extends:
               outputs:
               - output: containerImage
                 image: vscodehub.azurecr.io/vscode-linux-build-agent:alpine-arm64
+                condition: eq(${{ parameters.dockerhub_release }}, 'true')
             steps:
               - template: build-containers.yml@self
                 parameters:
@@ -234,6 +236,7 @@ extends:
           #    outputs:
           #    - output: containerImage
           #      image: vscodehub.azurecr.io/vscode-linux-build-agent:snapcraft-x64
+          #      condition: eq(${{ parameters.dockerhub_release }}, 'true')
           #  steps:
           #    - template: build-containers.yml@self
           #      parameters:
