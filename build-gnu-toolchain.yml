@@ -18,7 +18,8 @@ steps:
   displayName: 'Prepare dependencies'
 - script: |
     set -e
-    wget https://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.26.0.tar.bz2
+    # https results in a connection error, so we have to use http
+    wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.26.0.tar.bz2
     tar -xjf crosstool-ng-1.26.0.tar.bz2
     cd crosstool-ng-1.26.0
     ./configure --prefix=`pwd`/out
