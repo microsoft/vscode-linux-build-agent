@@ -4,6 +4,6 @@ steps:
     displayName: 'Register Docker QEMU'
 - task: 1ES.BuildContainerImage@1
   inputs:
-    image: VSCodeHub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}    # Image name to build (including a tag). Required. Alias: localImage
+    image: vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}    # Image name to build (including a tag). Required. Alias: localImage
     path: ${{ parameters.arch }}
     dockerfile: ${{ parameters.arch }}/Dockerfile

@@ -204,7 +204,7 @@ extends:
             templateContext:
               outputs:
               - output: containerImage
-                image: VSCodeHub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}
+                image: vscodehub.azurecr.io/vscode-linux-build-agent:alpine-x64
             steps:
               - template: build-containers.yml@self
                 parameters:
@@ -218,7 +218,7 @@ extends:
             templateContext:
               outputs:
               - output: containerImage
-                image: VSCodeHub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}
+                image: vscodehub.azurecr.io/vscode-linux-build-agent:alpine-arm64
             steps:
               - template: build-containers.yml@self
                 parameters:
@@ -230,6 +230,10 @@ extends:
           #  pool:
           #    name: 1es-ubuntu-22.04-x64
           #    os: linux
+          #  templateContext:
+          #    outputs:
+          #    - output: containerImage
+          #      image: vscodehub.azurecr.io/vscode-linux-build-agent:snapcraft-x64
           #  steps:
           #    - template: build-containers.yml@self
           #      parameters:
