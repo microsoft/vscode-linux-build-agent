@@ -13,7 +13,7 @@ stages:
     jobs:
       - job: aarch64_gcc_10_5_0_glibc_2_28
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         timeoutInMinutes: 180
         steps:
           - template: build-gnu-toolchain.yml
@@ -25,7 +25,7 @@ stages:
 
       - job: aarch64_gcc_8_5_0_glibc_2_28
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         timeoutInMinutes: 180
         steps:
           - template: build-gnu-toolchain.yml
@@ -37,7 +37,7 @@ stages:
 
       - job: x86_64_gcc_10_5_0_glibc_2_28
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         timeoutInMinutes: 180
         steps:
           - template: build-gnu-toolchain.yml
@@ -49,7 +49,7 @@ stages:
 
       - job: x86_64_gcc_8_5_0_glibc_2_28
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         timeoutInMinutes: 180
         steps:
           - template: build-gnu-toolchain.yml
@@ -61,7 +61,7 @@ stages:
 
       - job: armhf_gcc_10_5_0_glibc_2_28
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         timeoutInMinutes: 180
         steps:
           - template: build-gnu-toolchain.yml
@@ -73,7 +73,7 @@ stages:
 
       - job: armhf_gcc_8_5_0_glibc_2_28
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         timeoutInMinutes: 180
         steps:
           - template: build-gnu-toolchain.yml
@@ -85,7 +85,7 @@ stages:
 
       - job: aarch64_musl_gcc_10_3_0
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         timeoutInMinutes: 180
         steps:
           - template: build-musl-toolchain.yml
@@ -98,7 +98,7 @@ stages:
       dependsOn:
         - Generate_toolchain
       pool:
-        vmImage: 'ubuntu-latest'
+        vmImage: 'ubuntu-22.04'
       jobs:
         - job: Publish_to_Github
           variables:
@@ -138,7 +138,7 @@ stages:
     jobs:
       - job: alpine_x64
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         steps:
           - template: build-containers.yml
             parameters:
@@ -147,7 +147,7 @@ stages:
 
       - job: alpine_arm64
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'ubuntu-22.04'
         steps:
           - template: build-containers.yml
             parameters:
@@ -157,7 +157,7 @@ stages:
 
       #- job: snapcraft_x64
       #  pool:
-      #    vmImage: 'ubuntu-latest'
+      #    vmImage: 'ubuntu-22.04'
       #  steps:
       #    - template: build-containers.yml
       #      parameters:
