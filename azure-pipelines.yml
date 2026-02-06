@@ -202,7 +202,7 @@ extends:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
-              - template: build-containers.yml
+              - template: build-containers.yml@self
                 parameters:
                   arch: alpine-x64
                   release: ${{ parameters.dockerhub_release }}
@@ -212,7 +212,7 @@ extends:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
-              - template: build-containers.yml
+              - template: build-containers.yml@self
                 parameters:
                   qemu: 'true'
                   arch: alpine-arm64
@@ -223,7 +223,7 @@ extends:
           #    name: 1es-ubuntu-22.04-x64
           #    os: linux
           #  steps:
-          #    - template: build-containers.yml
+          #    - template: build-containers.yml@self
           #      parameters:
           #        arch: snapcraft-x64
           #        release: ${{ parameters.dockerhub_release }}
