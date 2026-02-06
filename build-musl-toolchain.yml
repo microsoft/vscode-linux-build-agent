@@ -22,7 +22,5 @@ steps:
     set -e
     cd musl-cross-make
     tar -czf ${{ parameters.pkg }}.tar.gz output
-  displayName: 'Create pipeline asset'
-- publish: musl-cross-make/${{ parameters.pkg }}.tar.gz
-  artifact: ${{ parameters.pkg }}
-  displayName: 'Publish artifact'
+    cp ${{ parameters.pkg }}.tar.gz $(Build.ArtifactStagingDirectory)/
+  displayName: 'Create and stage pipeline asset'
