@@ -18,6 +18,7 @@ steps:
   displayName: 'Prepare dependencies'
 - script: |
     set -e
+    # https results in a connection error, so we have to use http
     wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.26.0.tar.bz2
     tar -xjf crosstool-ng-1.26.0.tar.bz2
     cd crosstool-ng-1.26.0
@@ -43,7 +44,5 @@ steps:
     set -e
     cd toolchain-dir
     tar -czf ${{ parameters.pkg }}.tar.gz ${{ parameters.tuple }}
-  displayName: 'Create pipeline asset'
-- publish: toolchain-dir/${{ parameters.pkg }}.tar.gz
-  artifact: ${{ parameters.pkg }}
-  displayName: 'Publish artifact'
+    cp ${{ parameters.pkg }}.tar.gz $(Build.ArtifactStagingDirectory)/
+  displayName: 'Create and stage pipeline asset'
