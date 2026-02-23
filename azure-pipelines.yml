@@ -8,158 +8,222 @@ parameters:
     type: boolean
     default: false
 
-stages:
-  - stage: Generate_toolchain
-    jobs:
-      - job: aarch64_gcc_10_5_0_glibc_2_28
-        pool:
-          vmImage: 'ubuntu-22.04'
-        timeoutInMinutes: 180
-        steps:
-          - template: build-gnu-toolchain.yml
-            parameters:
-              config: aarch64-gcc-10.5.0-glibc-2.28.config
-              arch: arm64
-              tuple: aarch64-linux-gnu
-              pkg: aarch64-linux-gnu-glibc-2.28-gcc-10.5.0
+resources:
+  repositories:
+    - repository: 1esPipelines
+      type: git
+      name: 1ESPipelineTemplates/1ESPipelineTemplates
+      ref: refs/tags/release
 
-      - job: aarch64_gcc_8_5_0_glibc_2_28
-        pool:
-          vmImage: 'ubuntu-22.04'
-        timeoutInMinutes: 180
-        steps:
-          - template: build-gnu-toolchain.yml
-            parameters:
-              config: aarch64-gcc-8.5.0-glibc-2.28.config
-              arch: arm64
-              tuple: aarch64-linux-gnu
-              pkg: aarch64-linux-gnu-glibc-2.28-gcc-8.5.0
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1esPipelines
+  parameters:
+    sdl:
+      sourceAnalysisPool: 1es-windows-2022-x64
+    stages:
+      - stage: Generate_toolchain
+        jobs:
+          - job: aarch64_gcc_10_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: aarch64-linux-gnu-glibc-2.28-gcc-10.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  config: aarch64-gcc-10.5.0-glibc-2.28.config
+                  arch: arm64
+                  tuple: aarch64-linux-gnu
+                  pkg: aarch64-linux-gnu-glibc-2.28-gcc-10.5.0
 
-      - job: x86_64_gcc_10_5_0_glibc_2_28
-        pool:
-          vmImage: 'ubuntu-22.04'
-        timeoutInMinutes: 180
-        steps:
-          - template: build-gnu-toolchain.yml
-            parameters:
-              config: x86_64-gcc-10.5.0-glibc-2.28.config
-              arch: amd64
-              tuple: x86_64-linux-gnu
-              pkg: x86_64-linux-gnu-glibc-2.28-gcc-10.5.0
+          - job: aarch64_gcc_8_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: aarch64-linux-gnu-glibc-2.28-gcc-8.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  config: aarch64-gcc-8.5.0-glibc-2.28.config
+                  arch: arm64
+                  tuple: aarch64-linux-gnu
+                  pkg: aarch64-linux-gnu-glibc-2.28-gcc-8.5.0
 
-      - job: x86_64_gcc_8_5_0_glibc_2_28
-        pool:
-          vmImage: 'ubuntu-22.04'
-        timeoutInMinutes: 180
-        steps:
-          - template: build-gnu-toolchain.yml
-            parameters:
-              config: x86_64-gcc-8.5.0-glibc-2.28.config
-              arch: amd64
-              tuple: x86_64-linux-gnu
-              pkg: x86_64-linux-gnu-glibc-2.28-gcc-8.5.0
+          - job: x86_64_gcc_10_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: x86_64-linux-gnu-glibc-2.28-gcc-10.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  config: x86_64-gcc-10.5.0-glibc-2.28.config
+                  arch: amd64
+                  tuple: x86_64-linux-gnu
+                  pkg: x86_64-linux-gnu-glibc-2.28-gcc-10.5.0
 
-      - job: armhf_gcc_10_5_0_glibc_2_28
-        pool:
-          vmImage: 'ubuntu-22.04'
-        timeoutInMinutes: 180
-        steps:
-          - template: build-gnu-toolchain.yml
-            parameters:
-              arch: armhf
-              config: armhf-gcc-10.5.0-glibc-2.28.config
-              tuple: arm-rpi-linux-gnueabihf
-              pkg: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0
+          - job: x86_64_gcc_8_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: x86_64-linux-gnu-glibc-2.28-gcc-8.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  config: x86_64-gcc-8.5.0-glibc-2.28.config
+                  arch: amd64
+                  tuple: x86_64-linux-gnu
+                  pkg: x86_64-linux-gnu-glibc-2.28-gcc-8.5.0
 
-      - job: armhf_gcc_8_5_0_glibc_2_28
-        pool:
-          vmImage: 'ubuntu-22.04'
-        timeoutInMinutes: 180
-        steps:
-          - template: build-gnu-toolchain.yml
-            parameters:
-              arch: armhf
-              config: armhf-gcc-8.5.0-glibc-2.28.config
-              tuple: arm-rpi-linux-gnueabihf
-              pkg: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0
+          - job: armhf_gcc_10_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  arch: armhf
+                  config: armhf-gcc-10.5.0-glibc-2.28.config
+                  tuple: arm-rpi-linux-gnueabihf
+                  pkg: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0
 
-      - job: aarch64_musl_gcc_10_3_0
-        pool:
-          vmImage: 'ubuntu-22.04'
-        timeoutInMinutes: 180
-        steps:
-          - template: build-musl-toolchain.yml
-            parameters:
-              tuple: aarch64-linux-musl
-              pkg: aarch64-linux-musl-gcc-10.3.0
+          - job: armhf_gcc_8_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  arch: armhf
+                  config: armhf-gcc-8.5.0-glibc-2.28.config
+                  tuple: arm-rpi-linux-gnueabihf
+                  pkg: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0
 
-  - ${{ if parameters.github_release }}:
-    - stage: Release_toolchain
-      dependsOn:
-        - Generate_toolchain
-      pool:
-        vmImage: 'ubuntu-22.04'
-      jobs:
-        - job: Publish_to_Github
-          variables:
-            currentDate: $[ format('{0:yyyy}{0:MM}{0:dd}', pipeline.startTime) ]
-          steps:
-            - download: current
-              patterns: |
-                **/*.tar.gz
-            - script: cp $(Pipeline.Workspace)/x86_64-linux-gnu-glibc-2.28-gcc-10.5.0/x86_64-linux-gnu-glibc-2.28-gcc-10.5.0.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-linux-gnu-glibc-2.28-gcc-10.5.0.tar.gz
-              displayName: Copy x86_64 glibc 2.28 gcc 10.5.0 toolchain
-            - script: cp $(Pipeline.Workspace)/aarch64-linux-gnu-glibc-2.28-gcc-10.5.0/aarch64-linux-gnu-glibc-2.28-gcc-10.5.0.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-linux-gnu-glibc-2.28-gcc-10.5.0.tar.gz
-              displayName: Copy aarch64 glibc 2.28 gcc 10.5.0 toolchain
-            - script: cp $(Pipeline.Workspace)/arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0/arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0.tar.gz $(Build.ArtifactStagingDirectory)/arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0.tar.gz
-              displayName: Copy armhf glibc 2.28 gcc 10.5.0 toolchain
-            - script: cp $(Pipeline.Workspace)/x86_64-linux-gnu-glibc-2.28-gcc-8.5.0/x86_64-linux-gnu-glibc-2.28-gcc-8.5.0.tar.gz $(Build.ArtifactStagingDirectory)/x86_64-linux-gnu-glibc-2.28-gcc-8.5.0.tar.gz
-              displayName: Copy x86_64 glibc 2.28 gcc 8.5.0 toolchain
-            - script: cp $(Pipeline.Workspace)/aarch64-linux-gnu-glibc-2.28-gcc-8.5.0/aarch64-linux-gnu-glibc-2.28-gcc-8.5.0.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-linux-gnu-glibc-2.28-gcc-8.5.0.tar.gz
-              displayName: Copy aarch64 glibc 2.28 gcc 8.5.0 toolchain
-            - script: cp $(Pipeline.Workspace)/arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0/arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0.tar.gz $(Build.ArtifactStagingDirectory)/arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0.tar.gz
-              displayName: Copy armhf glibc 2.28 gcc 8.5.0 toolchain
-            - script: cp $(Pipeline.Workspace)/aarch64-linux-musl-gcc-10.3.0/aarch64-linux-musl-gcc-10.3.0.tar.gz $(Build.ArtifactStagingDirectory)/aarch64-linux-musl-gcc-10.3.0.tar.gz
-              displayName: Copy aarch64 musl gcc 10.3.0 toolchain
-            - script: (cd $(Build.ArtifactStagingDirectory) ; shasum -a 256 *.tar.gz) > $(Build.ArtifactStagingDirectory)/SHASUMS256.txt
-              displayName: Compute checksums
-            - task: GithubRelease@1
-              displayName: Create GitHub Release
-              inputs:
-                gitHubConnection: oauth
-                repositoryName: microsoft/vscode-linux-build-agent
-                action: create
-                addChangeLog: false
-                tagSource: userSpecifiedTag
-                tag: v$(currentDate)-$(Build.BuildId)
+          - job: aarch64_musl_gcc_10_3_0
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: aarch64-linux-musl-gcc-10.3.0
+            steps:
+              - template: build-musl-toolchain.yml@self
+                parameters:
+                  tuple: aarch64-linux-musl
+                  pkg: aarch64-linux-musl-gcc-10.3.0
 
-  - stage: Containers
-    dependsOn: []
-    jobs:
-      - job: alpine_x64
-        pool:
-          vmImage: 'ubuntu-22.04'
-        steps:
-          - template: build-containers.yml
-            parameters:
-              arch: alpine-x64
-              release: ${{ parameters.dockerhub_release }}
+      - ${{ if parameters.github_release }}:
+        - stage: Release_toolchain
+          dependsOn:
+            - Generate_toolchain
+          pool:
+            name: 1es-ubuntu-22.04-x64
+            os: linux
+          jobs:
+            - job: Publish_to_Github
+              templateContext:
+                inputs:
+                  - input: pipelineArtifact
+                    artifactName: x86_64-linux-gnu-glibc-2.28-gcc-10.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: aarch64-linux-gnu-glibc-2.28-gcc-10.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: x86_64-linux-gnu-glibc-2.28-gcc-8.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: aarch64-linux-gnu-glibc-2.28-gcc-8.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: aarch64-linux-musl-gcc-10.3.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+              variables:
+                currentDate: $[ format('{0:yyyy}{0:MM}{0:dd}', pipeline.startTime) ]
+              steps:
+                - script: (cd $(Build.ArtifactStagingDirectory) ; shasum -a 256 *.tar.gz) > $(Build.ArtifactStagingDirectory)/SHASUMS256.txt
+                  displayName: Compute checksums
+                - task: GithubRelease@1
+                  displayName: Create GitHub Release
+                  inputs:
+                    gitHubConnection: oauth
+                    repositoryName: microsoft/vscode-linux-build-agent
+                    action: create
+                    addChangeLog: false
+                    tagSource: userSpecifiedTag
+                    tag: v$(currentDate)-$(Build.BuildId)
 
-      - job: alpine_arm64
-        pool:
-          vmImage: 'ubuntu-22.04'
-        steps:
-          - template: build-containers.yml
-            parameters:
-              qemu: 'true'
-              arch: alpine-arm64
-              release: ${{ parameters.dockerhub_release }}
+      - stage: Containers
+        dependsOn: []
+        jobs:
+          - job: alpine_x64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-containers.yml@self
+                parameters:
+                  arch: alpine-x64
+                  release: ${{ parameters.dockerhub_release }}
 
-      #- job: snapcraft_x64
-      #  pool:
-      #    vmImage: 'ubuntu-22.04'
-      #  steps:
-      #    - template: build-containers.yml
-      #      parameters:
-      #        arch: snapcraft-x64
-      #        release: ${{ parameters.dockerhub_release }}
+          - job: alpine_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-containers.yml@self
+                parameters:
+                  qemu: 'true'
+                  arch: alpine-arm64
+                  release: ${{ parameters.dockerhub_release }}
+
+          #- job: snapcraft_x64
+          #  pool:
+          #    name: 1es-ubuntu-22.04-x64
+          #    os: linux
+          #  steps:
+          #    - template: build-containers.yml@self
+          #      parameters:
+          #        arch: snapcraft-x64
+          #        release: ${{ parameters.dockerhub_release }}
