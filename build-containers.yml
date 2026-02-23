@@ -16,6 +16,5 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
       az acr login --name vscodehub
-      docker tag vscode-linux-build-agent:${{ parameters.arch }} vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}
       docker push vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}
   condition: and(succeeded(), eq(${{ parameters.release }}, true))
