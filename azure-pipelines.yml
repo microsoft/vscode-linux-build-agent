@@ -155,11 +155,21 @@ stages:
               arch: alpine-arm64
               release: ${{ parameters.dockerhub_release }}
 
-      #- job: snapcraft_x64
-      #  pool:
-      #    vmImage: 'ubuntu-22.04'
-      #  steps:
-      #    - template: build-containers.yml
-      #      parameters:
-      #        arch: snapcraft-x64
-      #        release: ${{ parameters.dockerhub_release }}
+      - job: snapcraft_x64
+        pool:
+          vmImage: 'ubuntu-22.04'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              arch: snapcraft-x64
+              release: ${{ parameters.dockerhub_release }}
+
+      - job: snapcraft_arm64
+        pool:
+          vmImage: 'ubuntu-22.04'
+        steps:
+          - template: build-containers.yml
+            parameters:
+              qemu: 'true'
+              arch: snapcraft-arm64
+              release: ${{ parameters.dockerhub_release }}
