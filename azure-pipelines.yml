@@ -207,6 +207,17 @@ extends:
                   arch: alpine-x64
                   release: ${{ parameters.dockerhub_release }}
 
+          - job: alpine_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-containers.yml@self
+                parameters:
+                  qemu: 'true'
+                  arch: alpine-arm64
+                  release: ${{ parameters.dockerhub_release }}
+
           - job: snapcraft_x64
             pool:
               name: 1es-ubuntu-22.04-x64
@@ -226,15 +237,4 @@ extends:
                 parameters:
                   qemu: 'true'
                   arch: snapcraft-arm64
-                  release: ${{ parameters.dockerhub_release }}
-
-          - job: alpine_arm64
-            pool:
-              name: 1es-ubuntu-22.04-x64
-              os: linux
-            steps:
-              - template: build-containers.yml@self
-                parameters:
-                  qemu: 'true'
-                  arch: alpine-arm64
                   release: ${{ parameters.dockerhub_release }}
