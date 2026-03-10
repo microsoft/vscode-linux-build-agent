@@ -157,6 +157,8 @@ extends:
           jobs:
             - job: Publish_to_Github
               templateContext:
+                type: releaseJob
+                isProduction: true
                 inputs:
                   - input: pipelineArtifact
                     artifactName: x86_64-linux-gnu-glibc-2.28-gcc-10.5.0
