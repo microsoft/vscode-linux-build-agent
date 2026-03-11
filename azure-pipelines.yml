@@ -15,7 +15,7 @@ variables:
   ${{ else }}:
     value: ''
 
-name: $(pipelinePrefix)$(Build.BuildId)
+name: $(pipelinePrefix)$(Build.BuildNumber)
 
 resources:
   repositories:
