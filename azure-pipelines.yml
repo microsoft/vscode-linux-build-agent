@@ -11,7 +11,7 @@ parameters:
 variables:
 - name: pipelinePrefix
   ${{ if eq(parameters.dockerhub_release, true) }}:
-    value: '(🐳) '
+    value: '[🐳] '
   ${{ else }}:
     value: ''
 
