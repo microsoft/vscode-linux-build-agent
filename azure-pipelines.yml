@@ -8,6 +8,15 @@ parameters:
     type: boolean
     default: false
 
+variables:
+- name: pipelinePrefix
+  ${{ if eq(parameters.dockerhub_release, true) }}:
+    value: '🐳 '
+  ${{ else }}:
+    value: ''
+
+name: $(pipelinePrefix)$(Build.BuildId)
+
 resources:
   repositories:
     - repository: 1esPipelines
