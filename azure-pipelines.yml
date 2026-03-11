@@ -11,11 +11,11 @@ parameters:
 variables:
 - name: pipelinePrefix
   ${{ if eq(parameters.dockerhub_release, true) }}:
-    value: '🐳 '
+    value: '(🐳) '
   ${{ else }}:
     value: ''
 
-name: $(pipelinePrefix)$(Build.BuildNumber)
+name: $(pipelinePrefix)$(Date:yyyyMMdd).$(Rev:r)
 
 resources:
   repositories:
