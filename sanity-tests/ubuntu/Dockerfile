@@ -1,6 +1,5 @@
-ARG MIRROR
 ARG BASE_IMAGE=ubuntu:22.04
-FROM ${MIRROR}${BASE_IMAGE}
+FROM ${BASE_IMAGE}
 
 # Use Azure package mirrors
 ARG TARGETARCH

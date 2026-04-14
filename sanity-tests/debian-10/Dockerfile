@@ -1,6 +1,5 @@
-ARG MIRROR
 ARG BASE_IMAGE=debian:10
-FROM ${MIRROR}${BASE_IMAGE}
+FROM ${BASE_IMAGE}
 
 # Update to archive repos since Debian 10 is EOL
 RUN sed -i 's|http://deb.debian.org|http://archive.debian.org|g' /etc/apt/sources.list && \
