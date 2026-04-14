@@ -1,6 +1,5 @@
-ARG MIRROR
 ARG BASE_IMAGE=debian:bookworm
-FROM ${MIRROR}${BASE_IMAGE}
+FROM ${BASE_IMAGE}
 
 # Utilities
 RUN apt-get update && \
@@ -17,7 +16,7 @@ RUN if [ "$TARGETARCH" = "arm" ]; then \
 	fi
 
 # Chromium
-RUN apt-get install -y chromium
+RUN apt-get install -y --no-install-recommends chromium
 ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Desktop Bus
