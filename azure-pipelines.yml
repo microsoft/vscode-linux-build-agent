@@ -249,3 +249,234 @@ extends:
                   qemu: 'true'
                   arch: snapcraft-arm64
                   release: ${{ parameters.dockerhub_release }}
+
+      - stage: Sanity_test_containers
+        dependsOn: []
+        jobs:
+          # Alpine: amd64, arm64
+          - job: alpine_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: alpine
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: alpine_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: alpine
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # CentOS: amd64, arm64
+          - job: centos_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: centos
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: centos_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: centos
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Debian 10: amd64, arm, arm64
+          - job: debian_10_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-10
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: debian_10_arm
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-10
+                  arch: arm
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: debian_10_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-10
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Debian 12: amd64, arm, arm64
+          - job: debian_12_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-12
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: debian_12_arm
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-12
+                  arch: arm
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: debian_12_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-12
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Fedora: amd64, arm64
+          - job: fedora_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: fedora
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: fedora_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: fedora
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # openSUSE: amd64, arm64
+          - job: opensuse_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: opensuse
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: opensuse_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: opensuse
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Red Hat: amd64, arm64
+          - job: redhat_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: redhat
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: redhat_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: redhat
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Ubuntu: amd64, arm, arm64
+          - job: ubuntu_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: ubuntu_arm
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu
+                  arch: arm
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: ubuntu_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
