@@ -28,7 +28,7 @@ RUN if [ "$TARGETARCH" = "arm" ]; then \
 	fi
 
 # Chromium
-RUN apt-get install -y chromium
+RUN apt-get install -y --no-install-recommends chromium
 ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Desktop Bus
