@@ -1,0 +1,14 @@
+steps:
+  - script: |
+      docker pull --platform linux/amd64 multiarch/qemu-user-static:latest
+      docker tag multiarch/qemu-user-static:latest vscodehub.azurecr.io/multiarch/qemu-user-static:latest
+    displayName: Pull and tag multiarch/qemu-user-static
+  - task: AzureCLI@2
+    displayName: Push multiarch/qemu-user-static to ACR
+    inputs:
+      azureSubscription: vscode
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        az acr login --name vscodehub
+        docker push vscodehub.azurecr.io/multiarch/qemu-user-static:latest
