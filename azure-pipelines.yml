@@ -469,38 +469,74 @@ extends:
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}
 
-          # Ubuntu: amd64, arm, arm64
-          - job: ubuntu_amd64
+          # Ubuntu 22.04: amd64, arm, arm64
+          - job: ubuntu_22_amd64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: ubuntu
+                  name: ubuntu-22
                   arch: amd64
                   release: ${{ parameters.dockerhub_release }}
 
-          - job: ubuntu_arm
+          - job: ubuntu_22_arm
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: ubuntu
+                  name: ubuntu-22
                   arch: arm
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}
 
-          - job: ubuntu_arm64
+          - job: ubuntu_22_arm64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: ubuntu
+                  name: ubuntu-22
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Ubuntu 24.04: amd64, arm, arm64
+          - job: ubuntu_24_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-24
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: ubuntu_24_arm
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-24
+                  arch: arm
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: ubuntu_24_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-24
                   arch: arm64
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}
