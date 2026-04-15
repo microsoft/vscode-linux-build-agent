@@ -13,8 +13,15 @@ parameters:
 
 steps:
   - ${{ if eq(parameters.qemu, 'true') }}:
-      - script: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - task: AzureCLI@2
         displayName: "Register Docker QEMU"
+        inputs:
+          azureSubscription: vscode
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            az acr login --name vscodehub
+            docker run --rm --privileged vscodehub.azurecr.io/multiarch/qemu-user-static:latest --reset -p yes
 
   - script: |
       docker buildx build \

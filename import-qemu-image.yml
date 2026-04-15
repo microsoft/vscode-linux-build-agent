@@ -1,0 +1,9 @@
+steps:
+  - task: AzureCLI@2
+    displayName: Import multiarch/qemu-user-static to ACR
+    inputs:
+      azureSubscription: vscode
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        az acr import --name vscodehub --source docker.io/multiarch/qemu-user-static --image multiarch/qemu-user-static:latest --force

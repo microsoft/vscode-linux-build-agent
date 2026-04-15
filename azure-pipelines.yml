@@ -205,8 +205,19 @@ extends:
                     tagSource: userSpecifiedTag
                     tag: v$(currentDate)-$(Build.BuildId)
 
-      - stage: Containers
+      - stage: Import_images
         dependsOn: []
+        jobs:
+          - job: qemu_user_static
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: import-qemu-image.yml@self
+
+      - stage: Containers
+        dependsOn:
+          - Import_images
         jobs:
           - job: alpine_x64
             pool:
@@ -251,7 +262,8 @@ extends:
                   release: ${{ parameters.dockerhub_release }}
 
       - stage: Sanity_test_containers
-        dependsOn: []
+        dependsOn:
+          - Import_images
         jobs:
           # Alpine: amd64, arm64
           - job: alpine_amd64
