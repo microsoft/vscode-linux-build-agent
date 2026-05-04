@@ -1,6 +1,8 @@
 ARG BASE_IMAGE=mcr.microsoft.com/devcontainers/base:alpine-3.22
 FROM ${BASE_IMAGE}
 
+RUN apk upgrade --no-cache
+
 # Node.js 22
 RUN apk add --no-cache nodejs
 

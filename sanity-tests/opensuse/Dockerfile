@@ -1,6 +1,8 @@
 ARG BASE_IMAGE=opensuse/leap:16.0
 FROM ${BASE_IMAGE}
 
+RUN zypper update -y
+
 # Node.js 22
 RUN zypper install -y nodejs22
 
