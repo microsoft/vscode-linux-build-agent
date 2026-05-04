@@ -313,38 +313,38 @@ extends:
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}
 
-          # Debian 10: amd64, arm, arm64
-          - job: debian_10_amd64
+          # Debian 11: amd64, arm, arm64
+          - job: debian_11_amd64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: debian-10
+                  name: debian-11
                   arch: amd64
                   release: ${{ parameters.dockerhub_release }}
 
-          - job: debian_10_arm
+          - job: debian_11_arm
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: debian-10
+                  name: debian-11
                   arch: arm
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}
 
-          - job: debian_10_arm64
+          - job: debian_11_arm64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: debian-10
+                  name: debian-11
                   arch: arm64
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}
@@ -385,50 +385,50 @@ extends:
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}
 
-          # Fedora 36: amd64, arm64
-          - job: fedora_36_amd64
+          # Fedora 42: amd64, arm64
+          - job: fedora_42_amd64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: fedora-36
+                  name: fedora-42
                   arch: amd64
                   release: ${{ parameters.dockerhub_release }}
 
-          - job: fedora_36_arm64
+          - job: fedora_42_arm64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: fedora-36
+                  name: fedora-42
                   arch: arm64
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}
 
-          # Fedora 40: amd64, arm64
-          - job: fedora_40_amd64
+          # Fedora 43: amd64, arm64
+          - job: fedora_43_amd64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: fedora-40
+                  name: fedora-43
                   arch: amd64
                   release: ${{ parameters.dockerhub_release }}
 
-          - job: fedora_40_arm64
+          - job: fedora_43_arm64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-sanity-test-containers.yml@self
                 parameters:
-                  name: fedora-40
+                  name: fedora-43
                   arch: arm64
                   qemu: 'true'
                   release: ${{ parameters.dockerhub_release }}

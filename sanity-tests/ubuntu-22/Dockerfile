@@ -11,13 +11,14 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
 
 # Utilities
 RUN apt-get update && \
+	apt-get upgrade -y && \
 	apt-get install -y curl iproute2
 
 # Node.js (arm32 uses official tarball since NodeSource dropped armhf support)
 ARG TARGETARCH
 RUN if [ "$TARGETARCH" = "arm" ]; then \
 		apt-get install -y libatomic1 && \
-		curl -fsSL https://nodejs.org/dist/v20.18.3/node-v20.18.3-linux-armv7l.tar.gz | tar -xz -C /usr/local --strip-components=1; \
+		curl -fsSL https://nodejs.org/dist/v22.22.2/node-v22.22.2-linux-armv7l.tar.gz | tar -xz -C /usr/local --strip-components=1; \
 	else \
 		curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
 		apt-get install -y nodejs; \

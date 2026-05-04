@@ -1,9 +1,11 @@
-ARG BASE_IMAGE=fedora:40
+ARG BASE_IMAGE=fedora:42
 FROM ${BASE_IMAGE}
+
+RUN dnf update -y
 
 # Node.js 22
 RUN curl -fsSL https://rpm.nodesource.com/setup_22.x | bash - && \
-	dnf install -y nodejs-22.21.1
+	dnf install -y nodejs-22.22.2
 
 # Chromium
 RUN dnf install -y chromium
