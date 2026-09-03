@@ -16,7 +16,8 @@ steps:
     set -e
     git clone https://github.com/richfelker/musl-cross-make/
     cd musl-cross-make
-    make TARGET=${{ parameters.tuple }} GCC_VER=10.3.0 BINUTILS_VER=2.33.1 LINUX_VER=5.8.5 install
+    make TARGET=${{ parameters.tuple }} GCC_VER=10.3.0 BINUTILS_VER=2.33.1 LINUX_VER=5.8.5 \
+      DL_CMD='wget -c --tries=5 --waitretry=5 --retry-on-http-error=500,502,503,504 -O' install
   displayName: 'Build toolchain'
 - script: |
     set -e
