@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:11
+ARG BASE_IMAGE=debian:13
 FROM ${BASE_IMAGE}
 
 # Utilities
