@@ -10,13 +10,15 @@ steps:
     sudo apt-get update
     sudo apt-get install -y gcc g++ gperf bison flex texinfo help2man make libncurses5-dev \
     python3-dev autoconf automake libtool libtool-bin gawk wget bzip2 xz-utils unzip \
-    patch rsync meson ninja-build git
+    patch rsync meson ninja-build git curl
   displayName: 'Prepare dependencies'
 - script: |
     set -e
     git clone https://github.com/richfelker/musl-cross-make/
     cd musl-cross-make
-    make TARGET=${{ parameters.tuple }} GCC_VER=10.3.0 BINUTILS_VER=2.33.1 LINUX_VER=5.8.5 install
+    make TARGET=${{ parameters.tuple }} GCC_VER=10.3.0 BINUTILS_VER=2.33.1 LINUX_VER=5.8.5 \
+      GNU_SITE=https://ftp.gnu.org/gnu \
+      DL_CMD='curl --fail --location --retry 10 --retry-delay 5 --retry-all-errors --output' install
   displayName: 'Build toolchain'
 - script: |
     set -e

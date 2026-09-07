@@ -50,8 +50,12 @@ KEYRING_FILE="${SCRIPT_DIR}/keyring.gpg"
 DEBIAN_PACKAGES="\
   comerr-dev
   krb5-multidev
+  libblkid1
   libbsd0
   libcom-err2
+  libffi7
+  libglib2.0-0
+  libglib2.0-dev
   libgssapi-krb5-2
   libgssrpc4
   libk5crypto3
@@ -64,6 +68,8 @@ DEBIAN_PACKAGES="\
   libkrb5support0
   liblzma5
   libmd0
+  libmount1
+  libpcre3
   libpcre2-8-0
   libselinux1
   libssl-dev
