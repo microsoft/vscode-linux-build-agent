@@ -14,7 +14,7 @@ steps:
     sudo apt-get update
     sudo apt-get install -y gcc g++ gperf bison flex texinfo help2man make libncurses5-dev \
     python3-dev autoconf automake libtool libtool-bin gawk wget bzip2 xz-utils unzip \
-    patch rsync meson ninja-build
+    patch rsync meson ninja-build pkg-config
   displayName: 'Prepare dependencies'
 - script: |
     set -e
@@ -40,6 +40,15 @@ steps:
     ./sysroot-scripts/sysroot-creator.sh build ${{ parameters.arch }} \
     `pwd`/toolchain-dir/${{ parameters.tuple }}/${{ parameters.tuple }}/sysroot
   displayName: 'Install additional libraries'
+- script: |
+    set -e
+    sysroot=`pwd`/toolchain-dir/${{ parameters.tuple }}/${{ parameters.tuple }}/sysroot
+    gio_pc=`find "$sysroot/usr/lib" -path '*/pkgconfig/gio-2.0.pc' -print -quit`
+    test -n "$gio_pc"
+    PKG_CONFIG_SYSROOT_DIR="$sysroot" \
+    PKG_CONFIG_LIBDIR="`dirname "$gio_pc"`:$sysroot/usr/lib/pkgconfig:$sysroot/usr/share/pkgconfig" \
+      pkg-config --cflags --libs gio-2.0
+  displayName: 'Validate GIO pkg-config metadata'
 - script: |
     set -e
     cd toolchain-dir
