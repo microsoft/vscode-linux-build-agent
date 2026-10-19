@@ -12,7 +12,7 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
 # Utilities
 RUN apt-get update && \
 	apt-get upgrade -y && \
-	apt-get install -y curl iproute2
+	apt-get install -y curl iproute2 sudo passwd util-linux
 
 # Node.js (arm32 uses official tarball since NodeSource dropped armhf support)
 ARG TARGETARCH

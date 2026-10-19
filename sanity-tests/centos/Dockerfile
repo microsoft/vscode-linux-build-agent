@@ -1,7 +1,8 @@
 ARG BASE_IMAGE=quay.io/centos/centos:stream9
 FROM ${BASE_IMAGE}
 
-RUN dnf update -y
+RUN dnf update -y && \
+	dnf install -y sudo shadow-utils util-linux
 
 # Node.js 22
 RUN dnf module enable -y nodejs:22 && \
