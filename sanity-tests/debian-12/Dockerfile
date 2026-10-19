@@ -4,7 +4,7 @@ FROM ${BASE_IMAGE}
 # Utilities
 RUN apt-get update && \
 	apt-get upgrade -y && \
-	apt-get install -y curl
+	apt-get install -y curl sudo passwd util-linux
 
 # Node.js (arm32 uses official tarball since NodeSource dropped armhf support)
 ARG TARGETARCH

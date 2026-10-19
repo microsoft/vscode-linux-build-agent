@@ -33,6 +33,39 @@ steps:
         "sanity-tests/${{ parameters.name }}"
     displayName: Build Container Image
 
+  - ${{ if and(ne(parameters.name, 'alpine'), ne(parameters.arch, 'arm')) }}:
+      - script: |
+          docker run --rm --pull=never --network none \
+            --platform "linux/${{ parameters.arch }}" \
+            --env "QEMU=${{ parameters.qemu }}" \
+            --entrypoint sh \
+            "vscodehub.azurecr.io/vscode-linux-build-agent/sanity-tests:${{ parameters.name }}-${{ parameters.arch }}" \
+            -ec '
+              for command in sudo useradd runuser; do
+                command -v "$command"
+              done
+              useradd --create-home sanity
+              printf "sanity ALL=(root) NOPASSWD: /usr/bin/dpkg, /usr/bin/rpm\n" > /etc/sudoers.d/sanity
+              chmod 440 /etc/sudoers.d/sanity
+              visudo -cf /etc/sudoers.d/sanity
+              test -u /usr/bin/sudo
+              test "$(stat -c %u /usr/bin/sudo)" -eq 0
+              if command -v dpkg > /dev/null 2>&1; then
+                package_manager=/usr/bin/dpkg
+              else
+                package_manager=/usr/bin/rpm
+              fi
+              sudo -n -l -U sanity "$package_manager" --version
+              if [ "$QEMU" = "true" ]; then
+                # QEMU user-mode execution cannot reliably preserve setuid transitions.
+                echo "Verified prerequisites and sudo policy; skipping privilege transitions under QEMU"
+              else
+                test "$(runuser -u sanity -- id -u)" -ne 0
+                runuser -u sanity -- sudo -n "$package_manager" --version
+              fi
+            '
+        displayName: Verify offline test prerequisites
+
   - task: AzureCLI@2
     displayName: Push Container Image
     inputs:
