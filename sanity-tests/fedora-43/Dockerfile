@@ -6,7 +6,7 @@ RUN dnf update -y && \
 
 # Node.js 22
 RUN curl -fsSL https://rpm.nodesource.com/setup_22.x | bash - && \
-	dnf install -y nodejs-22.22.2
+	dnf install -y nodejs-22.23.4
 
 # Chromium
 RUN dnf install -y chromium
