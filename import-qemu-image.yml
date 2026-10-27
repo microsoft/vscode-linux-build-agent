@@ -1,8 +1,9 @@
 steps:
   - script: |
-      docker pull --platform linux/amd64 multiarch/qemu-user-static:latest
-      docker tag multiarch/qemu-user-static:latest vscodehub.azurecr.io/multiarch/qemu-user-static:latest
-    displayName: Pull and tag multiarch/qemu-user-static
+      set -e
+      docker pull --platform linux/amd64 mcr.microsoft.com/mirror/docker/multiarch/qemu-user-static:7.2.0-1
+      docker tag mcr.microsoft.com/mirror/docker/multiarch/qemu-user-static:7.2.0-1 vscodehub.azurecr.io/multiarch/qemu-user-static:latest
+    displayName: Pull QEMU from MCR and tag for ACR
   - task: AzureCLI@2
     displayName: Push multiarch/qemu-user-static to ACR
     inputs:
