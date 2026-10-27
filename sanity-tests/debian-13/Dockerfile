@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=mcr.microsoft.com/mirror/docker/library/debian:trixie
+ARG BASE_IMAGE=vscodehub.azurecr.io/cache/mcr/mirror/docker/library/debian:trixie
 FROM ${BASE_IMAGE}
 
 # Utilities

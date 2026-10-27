@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=redhat/ubi9:9.7
+ARG BASE_IMAGE=vscodehub.azurecr.io/cache/docker/redhat/ubi9:9.7
 FROM ${BASE_IMAGE}
 
 RUN dnf update -y && \

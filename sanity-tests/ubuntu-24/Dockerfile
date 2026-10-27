@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=mcr.microsoft.com/mirror/docker/library/ubuntu:24.04
+ARG BASE_IMAGE=vscodehub.azurecr.io/cache/mcr/mirror/docker/library/ubuntu:24.04
 FROM ${BASE_IMAGE}
 
 # Use Azure package mirrors

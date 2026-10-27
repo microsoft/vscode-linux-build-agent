@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=fedora:42
+ARG BASE_IMAGE=vscodehub.azurecr.io/cache/docker/library/fedora:42
 FROM ${BASE_IMAGE}
 
 RUN dnf update -y && \
