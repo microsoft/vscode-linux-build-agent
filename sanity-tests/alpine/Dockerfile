@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=mcr.microsoft.com/devcontainers/base:alpine-3.22
+ARG BASE_IMAGE=vscodehub.azurecr.io/cache/mcr/devcontainers/base:alpine-3.22
 FROM ${BASE_IMAGE}
 
 RUN apk upgrade --no-cache

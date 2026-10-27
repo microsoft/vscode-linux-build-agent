@@ -1,5 +1,5 @@
 ARG RISK=stable
-ARG REPO=mcr.microsoft.com/mirror/docker/library/ubuntu
+ARG REPO=vscodehub.azurecr.io/cache/mcr/mirror/docker/library/ubuntu
 ARG TAG=22.04
 
 FROM --platform=linux/arm64/v8 ${REPO}:${TAG} AS builder

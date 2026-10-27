@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=opensuse/leap:16.0
+ARG BASE_IMAGE=vscodehub.azurecr.io/cache/docker/opensuse/leap:16.0
 FROM ${BASE_IMAGE}
 
 RUN zypper update -y && \

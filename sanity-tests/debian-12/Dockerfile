@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:bookworm
+ARG BASE_IMAGE=vscodehub.azurecr.io/cache/mcr/mirror/docker/library/debian:bookworm
 FROM ${BASE_IMAGE}
 
 # Utilities
@@ -10,7 +10,7 @@ RUN apt-get update && \
 ARG TARGETARCH
 RUN if [ "$TARGETARCH" = "arm" ]; then \
 		apt-get install -y libatomic1 && \
-		curl -fsSL https://nodejs.org/dist/v22.22.2/node-v22.22.2-linux-armv7l.tar.gz | tar -xz -C /usr/local --strip-components=1; \
+		curl -fsSL https://nodejs.org/dist/v22.23.4/node-v22.23.4-linux-armv7l.tar.gz | tar -xz -C /usr/local --strip-components=1; \
 	else \
 		curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
 		apt-get install -y nodejs; \
