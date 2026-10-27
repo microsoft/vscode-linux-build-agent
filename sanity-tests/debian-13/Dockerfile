@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:13
+ARG BASE_IMAGE=mcr.microsoft.com/mirror/docker/library/debian:trixie
 FROM ${BASE_IMAGE}
 
 # Utilities

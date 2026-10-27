@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:bookworm
+ARG BASE_IMAGE=mcr.microsoft.com/mirror/docker/library/debian:bookworm
 FROM ${BASE_IMAGE}
 
 # Utilities

@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ubuntu:22.04
+ARG BASE_IMAGE=mcr.microsoft.com/mirror/docker/library/ubuntu:22.04
 FROM ${BASE_IMAGE}
 
 # Use Azure package mirrors
