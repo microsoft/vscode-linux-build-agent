@@ -1,14 +1,22 @@
 steps:
+- task: AzureCLI@2
+  displayName: 'Log in to container registry'
+  inputs:
+    azureSubscription: vscode
+    scriptType: pscore
+    scriptLocation: inlineScript
+    inlineScript: |
+      az acr login --name vscodehub
 - ${{ if eq(parameters.qemu, 'true') }}:
-  - task: AzureCLI@2
+  - script: |
+      set -euo pipefail
+      jq --version
+      BINFMT_IMAGE=vscodehub.azurecr.io/cache/docker/tonistiigi/binfmt:qemu-v10.2.3-68
+      docker run --rm --privileged --platform linux/amd64 "$BINFMT_IMAGE" --uninstall 'qemu-*' |
+        jq -e 'if any(.emulators[]?; startswith("qemu-")) then error("Failed to remove existing QEMU handlers") else . end'
+      docker run --rm --privileged --platform linux/amd64 "$BINFMT_IMAGE" --install arm64,arm |
+        jq -e 'if (.supported | index("linux/arm64") != null and index("linux/arm/v7") != null) then . else error("ARM64/ARM emulation is unavailable") end'
     displayName: 'Register Docker QEMU'
-    inputs:
-      azureSubscription: vscode
-      scriptType: pscore
-      scriptLocation: inlineScript
-      inlineScript: |
-        az acr login --name vscodehub
-        docker run --rm --privileged vscodehub.azurecr.io/multiarch/qemu-user-static:latest --reset -p yes
 - task: 1ES.BuildContainerImage@1
   inputs:
     image: vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}
