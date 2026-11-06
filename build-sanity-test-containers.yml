@@ -23,7 +23,13 @@ steps:
 
   - ${{ if eq(parameters.qemu, 'true') }}:
       - script: |
-          docker run --rm --privileged --platform linux/amd64 vscodehub.azurecr.io/cache/mcr/mirror/docker/multiarch/qemu-user-static:7.2.0-1 --reset -p yes
+          set -euo pipefail
+          jq --version
+          BINFMT_IMAGE=vscodehub.azurecr.io/cache/docker/tonistiigi/binfmt:qemu-v10.2.3-68
+          docker run --rm --privileged --platform linux/amd64 "$BINFMT_IMAGE" --uninstall 'qemu-*' |
+            jq -e 'if any(.emulators[]?; startswith("qemu-")) then error("Failed to remove existing QEMU handlers") else . end'
+          docker run --rm --privileged --platform linux/amd64 "$BINFMT_IMAGE" --install arm64,arm |
+            jq -e 'if (.supported | index("linux/arm64") != null and index("linux/arm/v7") != null) then . else error("ARM64/ARM emulation is unavailable") end'
         displayName: "Register Docker QEMU"
 
   - script: |

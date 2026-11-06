@@ -58,6 +58,11 @@ var dockerHubSources = [
     sourceRepository: 'docker.io/redhat/ubi9'
     targetRepository: 'cache/docker/redhat/ubi9'
   }
+  {
+    name: 'docker-binfmt'
+    sourceRepository: 'docker.io/tonistiigi/binfmt'
+    targetRepository: 'cache/docker/tonistiigi/binfmt'
+  }
 ]
 
 resource publicCacheRules 'Microsoft.ContainerRegistry/registries/cacheRules@2025-04-01' = [for image in publicSources: {
