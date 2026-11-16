@@ -6,6 +6,12 @@
 
 Just push to `main`!
 
+## Container images
+
+Alpine build and sanity-test images use the official Alpine 3.22.8 image via `vscodehub.azurecr.io/cache/docker/library/alpine:3.22.8`. Deploy [acr-cache.bicep](acr-cache.bicep) with `dockerHubCredentialSetName` set to an existing Docker Hub credential set before building these images. The template creates the authenticated `linux-build-docker-alpine` cache rule.
+
+Rebuild and validate both Alpine architectures before retiring the old `linux-build-mcr-devcontainers-base` cache rule and its unused manifests. Removing the rule from the template does not delete it during an incremental deployment, and deleting a cache rule does not delete already-cached images.
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

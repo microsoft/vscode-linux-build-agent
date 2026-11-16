@@ -16,11 +16,6 @@ resource dockerHubCredentialSet 'Microsoft.ContainerRegistry/registries/credenti
 
 var publicSources = [
   {
-    name: 'mcr-devcontainers-base'
-    sourceRepository: 'mcr.microsoft.com/devcontainers/base'
-    targetRepository: 'cache/mcr/devcontainers/base'
-  }
-  {
     name: 'mcr-debian'
     sourceRepository: 'mcr.microsoft.com/mirror/docker/library/debian'
     targetRepository: 'cache/mcr/mirror/docker/library/debian'
@@ -43,6 +38,11 @@ var publicSources = [
 ]
 
 var dockerHubSources = [
+  {
+    name: 'docker-alpine'
+    sourceRepository: 'docker.io/library/alpine'
+    targetRepository: 'cache/docker/library/alpine'
+  }
   {
     name: 'docker-fedora'
     sourceRepository: 'docker.io/library/fedora'

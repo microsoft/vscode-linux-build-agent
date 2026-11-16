@@ -1,5 +1,5 @@
-ARG REPO=vscodehub.azurecr.io/cache/mcr/devcontainers/base
-ARG TAG=alpine-3.22
+ARG REPO=vscodehub.azurecr.io/cache/docker/library/alpine
+ARG TAG=3.22.8
 FROM ${REPO}:${TAG}
 
 RUN apk update && apk upgrade && apk add nodejs npm g++ python3 make git bash curl perl pkgconfig libsecret-dev krb5-dev

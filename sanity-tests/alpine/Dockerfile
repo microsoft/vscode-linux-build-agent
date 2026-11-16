@@ -1,10 +1,10 @@
-ARG BASE_IMAGE=vscodehub.azurecr.io/cache/mcr/devcontainers/base:alpine-3.22
+ARG BASE_IMAGE=vscodehub.azurecr.io/cache/docker/library/alpine:3.22.8
 FROM ${BASE_IMAGE}
 
 RUN apk upgrade --no-cache
 
 # Node.js 22
-RUN apk add --no-cache nodejs
+RUN apk add --no-cache nodejs curl
 
 # Chromium
 RUN apk add --no-cache chromium
