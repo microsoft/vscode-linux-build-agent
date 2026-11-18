@@ -17,8 +17,8 @@ steps:
     git clone https://github.com/richfelker/musl-cross-make/
     cd musl-cross-make
     make TARGET=${{ parameters.tuple }} GCC_VER=10.3.0 BINUTILS_VER=2.33.1 LINUX_VER=5.8.5 \
-      GNU_SITE=https://ftp.gnu.org/gnu \
-      DL_CMD='curl --fail --location --retry 10 --retry-delay 5 --retry-all-errors --output' install
+      GNU_SITE=https://ftpmirror.gnu.org \
+      DL_CMD='curl --fail --location --connect-timeout 15 --speed-limit 1024 --speed-time 60 --retry 5 --retry-delay 5 --retry-all-errors --output' install
   displayName: 'Build toolchain'
 - script: |
     set -e
