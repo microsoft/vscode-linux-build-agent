@@ -1,4 +1,21 @@
-name: $(Date:yyyyMMdd).$(Rev:r)
+parameters:
+  - name: github_release
+    displayName: Create Github Release
+    type: boolean
+    default: false
+  - name: dockerhub_release
+    displayName: Create Dockerhub Release
+    type: boolean
+    default: false
+
+variables:
+- name: pipelinePrefix
+  ${{ if eq(parameters.dockerhub_release, true) }}:
+    value: '[🐳] '
+  ${{ else }}:
+    value: ''
+
+name: $(pipelinePrefix)$(Date:yyyyMMdd).$(Rev:r)
 
 resources:
   repositories:
@@ -13,20 +30,195 @@ extends:
     sdl:
       sourceAnalysisPool: 1es-windows-2022-x64
     stages:
-      - stage: Snapcraft
+      - stage: Generate_toolchain
+        jobs:
+          - job: aarch64_gcc_10_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: aarch64-linux-gnu-glibc-2.28-gcc-10.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  config: aarch64-gcc-10.5.0-glibc-2.28.config
+                  arch: arm64
+                  tuple: aarch64-linux-gnu
+                  pkg: aarch64-linux-gnu-glibc-2.28-gcc-10.5.0
+
+          - job: aarch64_gcc_8_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: aarch64-linux-gnu-glibc-2.28-gcc-8.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  config: aarch64-gcc-8.5.0-glibc-2.28.config
+                  arch: arm64
+                  tuple: aarch64-linux-gnu
+                  pkg: aarch64-linux-gnu-glibc-2.28-gcc-8.5.0
+
+          - job: x86_64_gcc_10_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: x86_64-linux-gnu-glibc-2.28-gcc-10.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  config: x86_64-gcc-10.5.0-glibc-2.28.config
+                  arch: amd64
+                  tuple: x86_64-linux-gnu
+                  pkg: x86_64-linux-gnu-glibc-2.28-gcc-10.5.0
+
+          - job: x86_64_gcc_8_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: x86_64-linux-gnu-glibc-2.28-gcc-8.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  config: x86_64-gcc-8.5.0-glibc-2.28.config
+                  arch: amd64
+                  tuple: x86_64-linux-gnu
+                  pkg: x86_64-linux-gnu-glibc-2.28-gcc-8.5.0
+
+          - job: armhf_gcc_10_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  arch: armhf
+                  config: armhf-gcc-10.5.0-glibc-2.28.config
+                  tuple: arm-rpi-linux-gnueabihf
+                  pkg: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0
+
+          - job: armhf_gcc_8_5_0_glibc_2_28
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0
+            steps:
+              - template: build-gnu-toolchain.yml@self
+                parameters:
+                  arch: armhf
+                  config: armhf-gcc-8.5.0-glibc-2.28.config
+                  tuple: arm-rpi-linux-gnueabihf
+                  pkg: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0
+
+          - job: aarch64_musl_gcc_10_3_0
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            timeoutInMinutes: 180
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  targetPath: $(Build.ArtifactStagingDirectory)
+                  artifactName: aarch64-linux-musl-gcc-10.3.0
+            steps:
+              - template: build-musl-toolchain.yml@self
+                parameters:
+                  tuple: aarch64-linux-musl
+                  pkg: aarch64-linux-musl-gcc-10.3.0
+
+      - ${{ if parameters.github_release }}:
+        - stage: Release_toolchain
+          dependsOn:
+            - Generate_toolchain
+          pool:
+            name: 1es-ubuntu-22.04-x64
+            os: linux
+          jobs:
+            - job: Publish_to_Github
+              templateContext:
+                type: releaseJob
+                isProduction: true
+                inputs:
+                  - input: pipelineArtifact
+                    artifactName: x86_64-linux-gnu-glibc-2.28-gcc-10.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: aarch64-linux-gnu-glibc-2.28-gcc-10.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-10.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: x86_64-linux-gnu-glibc-2.28-gcc-8.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: aarch64-linux-gnu-glibc-2.28-gcc-8.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: arm-rpi-linux-gnueabihf-glibc-2.28-gcc-8.5.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+                  - input: pipelineArtifact
+                    artifactName: aarch64-linux-musl-gcc-10.3.0
+                    targetPath: $(Build.ArtifactStagingDirectory)
+              variables:
+                currentDate: $[ format('{0:yyyy}{0:MM}{0:dd}', pipeline.startTime) ]
+              steps:
+                - script: (cd $(Build.ArtifactStagingDirectory) ; shasum -a 256 *.tar.gz) > $(Build.ArtifactStagingDirectory)/SHASUMS256.txt
+                  displayName: Compute checksums
+                - task: GithubRelease@1
+                  displayName: Create GitHub Release
+                  inputs:
+                    gitHubConnection: oauth
+                    repositoryName: microsoft/vscode-linux-build-agent
+                    action: create
+                    addChangeLog: false
+                    tagSource: userSpecifiedTag
+                    tag: v$(currentDate)-$(Build.BuildId)
+
+      - stage: Containers
         dependsOn: []
         jobs:
-          - job: snapcraft_x64
+          - job: alpine_x64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
             steps:
               - template: build-containers.yml@self
                 parameters:
-                  arch: snapcraft-x64
-                  release: false
+                  arch: alpine-x64
+                  release: ${{ parameters.dockerhub_release }}
 
-          - job: snapcraft_arm64
+          - job: alpine_arm64
             pool:
               name: 1es-ubuntu-22.04-x64
               os: linux
@@ -34,5 +226,319 @@ extends:
               - template: build-containers.yml@self
                 parameters:
                   qemu: 'true'
-                  arch: snapcraft-arm64
-                  release: false
+                  arch: alpine-arm64
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Snapcraft images are only built when explicitly publishing container updates.
+          - ${{ if eq(parameters.dockerhub_release, true) }}:
+            - job: snapcraft_x64
+              pool:
+                name: 1es-ubuntu-22.04-x64
+                os: linux
+              steps:
+                - template: build-containers.yml@self
+                  parameters:
+                    arch: snapcraft-x64
+                    release: true
+
+            - job: snapcraft_arm64
+              pool:
+                name: 1es-ubuntu-22.04-x64
+                os: linux
+              steps:
+                - template: build-containers.yml@self
+                  parameters:
+                    qemu: 'true'
+                    arch: snapcraft-arm64
+                    release: true
+
+      - stage: Sanity_test_containers
+        dependsOn: []
+        jobs:
+          # Alpine: amd64, arm64
+          - job: alpine_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: alpine
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: alpine_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: alpine
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # CentOS: amd64, arm64
+          - job: centos_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: centos
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: centos_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: centos
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Debian 13: amd64, arm, arm64
+          - job: debian_13_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-13
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: debian_13_arm
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-13
+                  arch: arm
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: debian_13_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-13
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Debian 12: amd64, arm, arm64
+          - job: debian_12_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-12
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: debian_12_arm
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-12
+                  arch: arm
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: debian_12_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: debian-12
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Fedora 42: amd64, arm64
+          - job: fedora_42_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: fedora-42
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: fedora_42_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: fedora-42
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Fedora 43: amd64, arm64
+          - job: fedora_43_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: fedora-43
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: fedora_43_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: fedora-43
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # openSUSE: amd64, arm64
+          - job: opensuse_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: opensuse
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: opensuse_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: opensuse
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Red Hat: amd64, arm64
+          - job: redhat_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: redhat
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: redhat_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: redhat
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Ubuntu 22.04: amd64, arm, arm64
+          - job: ubuntu_22_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-22
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: ubuntu_22_arm
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-22
+                  arch: arm
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: ubuntu_22_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-22
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          # Ubuntu 24.04: amd64, arm, arm64
+          - job: ubuntu_24_amd64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-24
+                  arch: amd64
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: ubuntu_24_arm
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-24
+                  arch: arm
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
+
+          - job: ubuntu_24_arm64
+            pool:
+              name: 1es-ubuntu-22.04-x64
+              os: linux
+            steps:
+              - template: build-sanity-test-containers.yml@self
+                parameters:
+                  name: ubuntu-24
+                  arch: arm64
+                  qemu: 'true'
+                  release: ${{ parameters.dockerhub_release }}
