@@ -18,8 +18,7 @@ RUN apt-get install --yes \
       git \
       build-essential \
       libkrb5-dev \
-      autoconf \
-      python3-pip
+      autoconf
 
 # Grab the core22 snap from the stable channel and unpack it in the proper place.
 RUN curl -L $(curl -H 'X-Ubuntu-Series: 16' 'https://api.snapcraft.io/api/v1/snaps/details/core22?architecture=arm64' | jq '.download_url' -r) --output core22.snap
@@ -39,7 +38,6 @@ RUN unsquashfs -d /snap/snapcraft/current snapcraft.snap
 # Embed python dependencies in the snapcraft snap.
 RUN ln -sf python3.12 /snap/snapcraft/current/usr/bin/python3
 RUN echo /snap/snapcraft/current/lib/python3.*/site-packages >> /snap/snapcraft/current/usr/lib/python3/dist-packages/site-packages.pth
-RUN pip3 install -U setuptools --target="$(ls -d /snap/snapcraft/current/lib/python3.*/site-packages)"
 
 # Create a snapcraft runner (TODO: move version detection to the core of snapcraft).
 RUN mkdir -p /snap/bin
@@ -71,3 +69,4 @@ ENV SNAP="/snap/snapcraft/current"
 ENV SNAP_NAME="snapcraft"
 ENV SNAP_ARCH="arm64"
 ENV PATH="/snap/bin:/snap/snapcraft/current/usr/bin:$PATH"
+RUN snapcraft --version
