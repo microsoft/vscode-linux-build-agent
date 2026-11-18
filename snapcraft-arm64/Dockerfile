@@ -1,9 +1,8 @@
 ARG RISK=stable
 ARG REPO=vscodehub.azurecr.io/cache/mcr/mirror/docker/library/ubuntu
 ARG TAG=22.04
-ARG TARGETPLATFORM=linux/arm64/v8
 
-FROM --platform=${TARGETPLATFORM} ${REPO}:${TAG} AS builder
+FROM ${REPO}:${TAG} AS builder
 ARG RISK
 ARG REPO
 ARG TAG
@@ -55,7 +54,7 @@ RUN git clone https://github.com/NixOS/patchelf
 RUN cd patchelf && ./bootstrap.sh && ./configure && make && make check && cp ./src/patchelf /snap/bin/patchelf
 
 # Multi-stage build, only need the snaps from the builder. Copy them one at a time so they can be cached.
-FROM --platform=${TARGETPLATFORM} ${REPO}:${TAG}
+FROM ${REPO}:${TAG}
 COPY --from=builder /snap/core22 /snap/core22
 COPY --from=builder /snap/core24 /snap/core24
 COPY --from=builder /snap/snapcraft /snap/snapcraft
