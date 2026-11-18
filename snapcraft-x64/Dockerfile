@@ -10,8 +10,8 @@ RUN echo "Building snapcraft:$RISK in $REPO:$TAG"
 
 # Grab dependencies
 RUN apt-get update
-RUN apt-get dist-upgrade --yes
-RUN apt-get install --yes \
+RUN DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --yes
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --yes \
       curl \
       jq \
       squashfs-tools \
@@ -63,7 +63,7 @@ COPY --from=builder /snap/bin/snapcraft /snap/bin/snapcraft
 COPY --from=builder /snap/bin/patchelf /snap/bin/patchelf
 
 # Generate locale and install dependencies.
-RUN apt-get update && apt-get install --yes snapd sudo locales && locale-gen en_US.UTF-8
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --yes snapd sudo locales && locale-gen en_US.UTF-8
 
 # Set the proper environment.
 ENV LANG="en_US.UTF-8"
@@ -72,5 +72,6 @@ ENV LC_ALL="en_US.UTF-8"
 ENV SNAP="/snap/snapcraft/current"
 ENV SNAP_NAME="snapcraft"
 ENV SNAP_ARCH="amd64"
+ENV CRYPTOGRAPHY_OPENSSL_NO_LEGACY="1"
 ENV PATH="/snap/bin:/snap/snapcraft/current/usr/bin:$PATH"
 RUN snapcraft --version
