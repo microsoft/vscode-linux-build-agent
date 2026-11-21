@@ -227,6 +227,7 @@ extends:
                 parameters:
                   qemu: 'true'
                   arch: alpine-arm64
+                  buildPlatform: linux/arm64
                   release: ${{ parameters.dockerhub_release }}
 
           # Snapcraft images are only built when explicitly publishing container updates.
@@ -250,6 +251,7 @@ extends:
                   parameters:
                     qemu: 'true'
                     arch: snapcraft-arm64
+                    buildPlatform: linux/arm64
                     release: true
 
       - stage: Sanity_test_containers
