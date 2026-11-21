@@ -1,6 +1,6 @@
 ARG REPO=vscodehub.azurecr.io/cache/docker/library/alpine
 ARG TAG=3.22.8
-FROM --platform=linux/arm64/v8 ${REPO}:${TAG}
+FROM ${REPO}:${TAG}
 
 RUN apk update && apk upgrade && apk add nodejs npm g++ python3 make git bash curl perl pkgconfig libsecret-dev krb5-dev
 

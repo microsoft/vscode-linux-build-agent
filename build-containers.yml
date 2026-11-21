@@ -17,12 +17,62 @@ steps:
       docker run --rm --privileged --platform linux/amd64 "$BINFMT_IMAGE" --install arm64,arm |
         jq -e 'if (.supported | index("linux/arm64") != null and index("linux/arm/v7") != null) then . else error("ARM64/ARM emulation is unavailable") end'
     displayName: 'Register Docker QEMU'
-- task: 1ES.BuildContainerImage@1
-  inputs:
-    image: vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}
-    path: ${{ parameters.arch }}
-    dockerfile: ${{ parameters.arch }}/Dockerfile
-    enableNetwork: true
+- ${{ if ne(parameters.qemu, 'true') }}:
+  - task: 1ES.BuildContainerImage@1
+    inputs:
+      image: vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}
+      path: ${{ parameters.arch }}
+      dockerfile: ${{ parameters.arch }}/Dockerfile
+      enableNetwork: true
+- ${{ if eq(parameters.qemu, 'true') }}:
+  - script: |
+      set -euo pipefail
+      image="vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}"
+      dockerfile="${{ parameters.arch }}/Dockerfile"
+      case "${{ parameters.arch }}" in
+        *-x64)
+          platform="linux/amd64"
+          ;;
+        *-arm64)
+          platform="linux/arm64"
+          ;;
+        *-armhf|*-arm)
+          platform="linux/arm/v7"
+          ;;
+        *)
+          echo "Unsupported QEMU container architecture: ${{ parameters.arch }}"
+          exit 1
+          ;;
+      esac
+      docker buildx create --use --name arm64-builder >/dev/null 2>&1 || docker buildx use arm64-builder
+      docker buildx inspect --bootstrap
+      docker buildx build \
+        --platform "$platform" \
+        --pull \
+        --tag "$image" \
+        --file "$dockerfile" \
+        --load \
+        "${{ parameters.arch }}"
+    displayName: 'Build ${{ parameters.arch }} container'
+- script: |
+    set -euo pipefail
+    image="vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}"
+    actual="$(docker image inspect --format '{{.Os}}/{{.Architecture}}' "$image")"
+    case "${{ parameters.arch }}" in
+      alpine-x64|snapcraft-x64)
+        expected="linux/amd64"
+        ;;
+      alpine-arm64|snapcraft-arm64)
+        expected="linux/arm64"
+        ;;
+      *)
+        echo "Unknown container architecture for ${{ parameters.arch }}"
+        exit 1
+        ;;
+    esac
+    echo "$image platform: $actual"
+    test "$actual" = "$expected"
+  displayName: 'Validate image architecture'
 - task: AzureCLI@2
   displayName: Azure CLI
   inputs:
