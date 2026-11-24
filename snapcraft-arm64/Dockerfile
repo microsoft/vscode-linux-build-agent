@@ -1,6 +1,6 @@
 ARG RISK=stable
 ARG REPO=vscodehub.azurecr.io/cache/mcr/mirror/docker/library/ubuntu
-ARG TAG=22.04
+ARG TAG=24.04
 
 FROM ${REPO}:${TAG} AS builder
 ARG RISK
@@ -20,13 +20,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install --yes \
       libkrb5-dev \
       autoconf
 
-# Grab the core22 snap from the stable channel and unpack it in the proper place.
-RUN download_url="$(curl -fsSL -H 'X-Ubuntu-Series: 16' -H 'X-Ubuntu-Architecture: arm64' 'https://api.snapcraft.io/api/v1/snaps/details/core22?channel=stable' | jq -er '.download_url')" && \
-      curl -fsSL "$download_url" --output core22.snap
-RUN mkdir -p /snap/core22
-RUN unsquashfs -d /snap/core22/current core22.snap
-
-# Grab the core24 snap (needed by snapcraft 8.x runtime) from the stable channel and unpack it in the proper place.
+# Grab the core24 snap from the stable channel and unpack it in the proper place.
 RUN download_url="$(curl -fsSL -H 'X-Ubuntu-Series: 16' -H 'X-Ubuntu-Architecture: arm64' 'https://api.snapcraft.io/api/v1/snaps/details/core24?channel=stable' | jq -er '.download_url')" && \
       curl -fsSL "$download_url" --output core24.snap
 RUN mkdir -p /snap/core24
@@ -55,7 +49,6 @@ RUN cd patchelf && ./bootstrap.sh && ./configure && make && make check && cp ./s
 
 # Multi-stage build, only need the snaps from the builder. Copy them one at a time so they can be cached.
 FROM ${REPO}:${TAG}
-COPY --from=builder /snap/core22 /snap/core22
 COPY --from=builder /snap/core24 /snap/core24
 COPY --from=builder /snap/snapcraft /snap/snapcraft
 COPY --from=builder /snap/bin/snapcraft /snap/bin/snapcraft
