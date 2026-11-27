@@ -17,7 +17,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install --yes \
       squashfs-tools \
       git \
       build-essential \
-      libkrb5-dev \
       autoconf
 
 # Grab the core24 snap from the stable channel and unpack it in the proper place.
