@@ -34,6 +34,9 @@ steps:
       useBuildKit: true
       buildArguments: --platform=${{ parameters.buildPlatform }}
     displayName: 'Build ${{ parameters.arch }} container'
+- script: docker logout vscodehub.azurecr.io
+  displayName: 'Log out of container registry after build'
+  condition: always()
 - script: |
     set -euo pipefail
     image="vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}"
@@ -63,3 +66,6 @@ steps:
       az acr login --name vscodehub
       docker push vscodehub.azurecr.io/vscode-linux-build-agent:${{ parameters.arch }}
   condition: and(succeeded(), eq(${{ parameters.release }}, true))
+- script: docker logout vscodehub.azurecr.io
+  displayName: 'Log out of container registry after push'
+  condition: and(always(), eq(${{ parameters.release }}, true))
